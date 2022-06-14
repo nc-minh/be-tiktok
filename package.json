@@ -1,0 +1,40 @@
+{
+  "name": "be-tiktok",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nc-minh/be-tiktok.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nc-minh/be-tiktok/issues"
+  },
+  "homepage": "https://github.com/nc-minh/be-tiktok#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-winston": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "ts-node": "^10.8.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.7.0",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.7.3"
+  },
+  "_moduleAliases": {
+    "@shared": "./src/shared",
+    "@modules": "./src/modules"
+  }
+}
