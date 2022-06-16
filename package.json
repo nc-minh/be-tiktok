@@ -54,7 +54,6 @@
   },
   "lint-staged": {
     "*": [
-      "npm run prettier:check",
       "npm run prettier",
       "git add ."
     ]
