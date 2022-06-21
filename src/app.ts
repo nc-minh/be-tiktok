@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import noCache from 'nocache';
 
+import routers from 'apis';
 const app = express();
 
 app.use(cors());
@@ -18,5 +19,6 @@ function initializeSecurity() {
 }
 
 initializeSecurity();
+app.use(routers);
 
 export default app;
