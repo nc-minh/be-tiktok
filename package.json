@@ -17,7 +17,8 @@
     "lint:fix": "yarn run eslint --fix src",
     "lint:css": "stylelint src/**/*.css",
     "check": "tsc --noEmit",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepare": "npx husky install"
   },
   "repository": {
     "type": "git",
