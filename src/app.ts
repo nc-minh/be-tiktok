@@ -19,5 +19,4 @@ function initializeSecurity() {
 
 initializeSecurity();
 
-
 export default app;
