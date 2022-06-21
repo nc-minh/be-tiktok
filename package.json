@@ -13,10 +13,10 @@
     "tslint:check": "tslint -c tslint.json './src/**/*.{js,ts,tsx}'",
     "prettier": "prettier --write ./src/**/*.{js,ts,tsx,scss}",
     "prettier:check": "prettier --list-different ./src/**/*.{js,ts,tsx,scss}",
-    "checkTs": "tsc --noEmit",
     "eslint": "eslint --ext js,ts,tsx",
     "lint:fix": "yarn run eslint --fix src",
-    "lint:css": "stylelint src/**/*.css"
+    "lint:css": "stylelint src/**/*.css",
+    "checkTs": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,9 @@
   "bugs": {
     "url": "https://github.com/nc-minh/be-tiktok/issues"
   },
+  "pre-commit": [
+    "lint:fix"
+  ],
   "homepage": "https://github.com/nc-minh/be-tiktok#readme",
   "dependencies": {
     "cors": "^2.8.5",
@@ -55,8 +58,5 @@
     "tslint": "^6.1.3",
     "typescript": "^4.7.3"
   },
-  "postinstall": "husky install",
-  "pre-commit": [
-    "lint:fix"
-  ]
+  "postinstall": "husky install"
 }
