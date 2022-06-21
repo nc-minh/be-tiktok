@@ -13,7 +13,7 @@
     "tslint:check": "tslint -c tslint.json './src/**/*.{js,ts,tsx}'",
     "prettier": "prettier --write ./src/**/*.{js,ts,tsx,scss}",
     "prettier:check": "prettier --list-different ./src/**/*.{js,ts,tsx,scss}",
-    "npm run check:tsv": "tsc --noEmit",
+    "checkTs": "tsc --noEmit",
     "eslint": "eslint --ext js,ts,tsx",
     "lint:fix": "yarn run eslint --fix src",
     "lint:css": "stylelint src/**/*.css"
