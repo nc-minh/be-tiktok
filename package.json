@@ -16,7 +16,7 @@
     "eslint": "eslint --ext js,ts,tsx",
     "lint:fix": "yarn run eslint --fix src",
     "lint:css": "stylelint src/**/*.css",
-    "check": "tsc --noEmit",
+    "noEmit": "tsc --noEmit",
     "precommit": "lint-staged",
     "prepare": "npx husky install"
   },
