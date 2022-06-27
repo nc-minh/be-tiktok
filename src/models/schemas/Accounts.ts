@@ -14,7 +14,7 @@ export const accountsSchema = new Schema<Accounts>(
     followers_count: { type: Number },
     likes_count: { type: Number },
     website_url: { type: String },
-    social_cetwork: [{ name: String, url: String }],
+    social_network: [{ name: String, url: String }],
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
