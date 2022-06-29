@@ -11,13 +11,11 @@
     "outDir": "./dist",
     "esModuleInterop": true,       
     "forceConsistentCasingInFileNames": true,  
+    "typeRoots" : ["./src/types", "./node_modules/@types"],
     /* Type Checking */
     "strict": true,    
     /* Completeness */
     "skipLibCheck": true,
-    "types": [
-      "node"
-    ]
   },
   "include": ["src", "~"],
   "exclude": [

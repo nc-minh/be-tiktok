@@ -1,13 +1,19 @@
+import { Request, NextFunction } from 'express';
+import { usersValidate } from 'Helpers/validation';
 import { AccountsModel } from 'models';
 
-const createAccount = async () => {
-  const result = AccountsModel.create({
-    id: 0,
-    full_name: 'NguyenCongMinh',
-    nickname: 'Mars',
-    avatar: '',
-  });
-  return result;
+const createAccount = async (req: Request, next: NextFunction) => {
+  const { error } = usersValidate(req.body);
+
+  if (error) {
+    console.log(error);
+
+    next(error);
+  } else {
+    const result = await AccountsModel.create(req.body);
+
+    return result;
+  }
 };
 
 export { createAccount };

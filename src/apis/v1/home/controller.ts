@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { ApiResponse } from 'utils/rest/ApiResponse';
+import { ApiResponse } from 'utils/rest';
 import * as service from './service';
 
 const getHome = async (req: Request, res: Response, next: NextFunction) => {

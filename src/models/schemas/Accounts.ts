@@ -4,24 +4,28 @@ import Accounts from '../types/Accounts';
 
 export const accountsSchema = new Schema<Accounts>(
   {
-    id: { type: Number, required: true, index: true },
-    full_name: { type: String, required: true },
+    fullname: { type: String, required: true },
     nickname: { type: String, required: true },
+    username: { type: String, required: true },
+    password: { type: String, required: true },
     avatar: { type: String },
     bio: { type: String },
-    tick: { type: Boolean, required: true, default: false },
-    followings_count: { type: Number },
-    followers_count: { type: Number },
-    likes_count: { type: Number },
+    is_enabled: { type: Boolean, default: true },
+    is_deleted: { type: Boolean, default: false },
+    tick: { type: Boolean, default: false },
+    followings_count: { type: Number, default: 0 },
+    followers_count: { type: Number, default: 0 },
+    likes_count: { type: Number, default: 0 },
     website_url: { type: String },
     social_network: [{ name: String, url: String }],
+    role: { type: String, default: 'user' },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   }
 );
 
-accountsSchema.index({ customerId: 1, vertical: 1 });
+accountsSchema.index({ nickname: 1, fullname: 1 });
 
 const AccountsModel: Model<Accounts> = model<Accounts>(MODELS.accounts, accountsSchema);
 
