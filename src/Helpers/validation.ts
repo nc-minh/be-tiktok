@@ -4,9 +4,8 @@ import { Request } from 'express';
 const usersValidate = (body: Request) => {
   const userSchema = Joi.object({
     fullname: Joi.string().required(),
-    nickname: Joi.string().min(5).max(32).required(),
-    username: Joi.string().min(5).max(32).required(),
-    password: Joi.string().min(5).max(32).required(),
+    username: Joi.string().min(5).max(128).required(),
+    password: Joi.string().min(5).max(128).required(),
     avatar: Joi.string(),
     bio: Joi.string(),
     is_enabled: Joi.boolean(),

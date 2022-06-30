@@ -1,3 +1,4 @@
 import HttpException from './HttpException';
+import { StatusCode } from './StatusCode';
 
-export { HttpException };
+export { HttpException, StatusCode };

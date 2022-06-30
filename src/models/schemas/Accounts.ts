@@ -1,12 +1,13 @@
 import { model, Model, Schema } from 'mongoose';
+import bcypt from 'bcrypt';
+
 import { MODELS } from 'utils/constants/models';
 import Accounts from '../types/Accounts';
 
-export const accountsSchema = new Schema<Accounts>(
+export const AccountsSchema = new Schema<Accounts>(
   {
     fullname: { type: String, required: true },
-    nickname: { type: String, required: true },
-    username: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String },
     bio: { type: String },
@@ -25,8 +26,26 @@ export const accountsSchema = new Schema<Accounts>(
   }
 );
 
-accountsSchema.index({ nickname: 1, fullname: 1 });
+AccountsSchema.index({ fullname: 'text', username: 'text' });
 
-const AccountsModel: Model<Accounts> = model<Accounts>(MODELS.accounts, accountsSchema);
+AccountsSchema.pre('save', async function (this: Accounts, next: (err?: Error | undefined) => void) {
+  if (!this.isModified('password')) {
+    return next();
+  }
 
+  const salt = await bcypt.genSalt(10);
+  const hashPassword = await bcypt.hash(this.password, salt);
+  this.password = hashPassword;
+  next();
+});
+
+AccountsSchema.methods.isCheckPassword = async function (this: Accounts, password: string) {
+  try {
+    return await bcypt.compare(password, this.password);
+  } catch (error) {
+    return false;
+  }
+};
+
+const AccountsModel: Model<Accounts> = model<Accounts>(MODELS.accounts, AccountsSchema);
 export default AccountsModel;

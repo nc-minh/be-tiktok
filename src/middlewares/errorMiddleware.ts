@@ -9,7 +9,6 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
     name: error.name,
     message: error.message,
     status: error.status,
-    stack: error.stack,
     errorCode: errorCode,
   });
 };
