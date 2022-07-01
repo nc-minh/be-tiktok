@@ -14,11 +14,11 @@ export default interface Accounts extends Document {
   password: string;
   is_enabled: boolean;
   is_deleted: boolean;
-  tick?: boolean;
+  tick: boolean;
   followings_count?: number;
   followers_count?: number;
   likes_count?: number;
   website_url?: number;
   social_network?: Types.DocumentArray<SocialNetwork>;
-  role?: string;
+  role: string;
 }

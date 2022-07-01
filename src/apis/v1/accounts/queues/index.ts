@@ -1,12 +1,12 @@
+import { HttpException, StatusCode } from 'exceptions';
 import { Request, NextFunction } from 'express';
 
-import { usersValidate } from 'Helpers/validation';
 import { AccountsModel } from 'models';
-import { HttpException, StatusCode } from 'exceptions';
+import { QUERY_DELETED, QUERY_IGNORE } from 'utils/constants/query';
 
-const getAllUsers = async (next: NextFunction) => {
+export const getAllUsers = async (next: NextFunction) => {
   try {
-    const result = await AccountsModel.find().select('-password -is_deleted');
+    const result = await AccountsModel.find({ ...QUERY_DELETED }).select(QUERY_IGNORE);
 
     return result;
   } catch (error) {
@@ -14,7 +14,7 @@ const getAllUsers = async (next: NextFunction) => {
   }
 };
 
-const searchAllUsers = async (req: Request, next: NextFunction) => {
+export const searchAllUsers = async (req: Request, next: NextFunction) => {
   const { q, type } = req.query;
   try {
     if (type === 'less') {
@@ -22,8 +22,9 @@ const searchAllUsers = async (req: Request, next: NextFunction) => {
         $text: {
           $search: String(q),
         },
+        ...QUERY_DELETED,
       })
-        .select('-password -is_deleted')
+        .select(QUERY_IGNORE)
         .limit(5);
 
       return result;
@@ -35,4 +36,24 @@ const searchAllUsers = async (req: Request, next: NextFunction) => {
   }
 };
 
-export { getAllUsers, searchAllUsers };
+export const getUserinfo = async (req: Request, next: NextFunction) => {
+  try {
+    const _id = req.user.userID;
+
+    const result = await AccountsModel.findOne({ _id, ...QUERY_DELETED }).select(QUERY_IGNORE);
+
+    if (!result) {
+      throw new HttpException(
+        'ForbiddenError',
+        StatusCode.BadRequest.status,
+        'Your account has been deleted',
+        'Banned',
+        Date.now() - req.startTime
+      );
+    }
+
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};

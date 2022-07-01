@@ -3,11 +3,11 @@ import { Request, NextFunction } from 'express';
 import { usersValidate } from 'Helpers/validation';
 import { AccountsModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
+import { QUERY_DELETED } from 'utils/constants/query';
 
 const createAccounts = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
   const { username } = req.body;
-
   try {
     if (error)
       throw new HttpException(
