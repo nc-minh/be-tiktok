@@ -6,7 +6,7 @@ import { HttpException, StatusCode } from 'exceptions';
 
 const getAllUsers = async (next: NextFunction) => {
   try {
-    const result = await AccountsModel.find().select('-password -is_deleted -created_at -updated_at');
+    const result = await AccountsModel.find().select('-password -is_deleted');
 
     return result;
   } catch (error) {
@@ -22,7 +22,9 @@ const searchAllUsers = async (req: Request, next: NextFunction) => {
         $text: {
           $search: String(q),
         },
-      }).limit(5);
+      })
+        .select('-password -is_deleted')
+        .limit(5);
 
       return result;
     } else {

@@ -19,4 +19,8 @@ export default {
     dbName: process.env.MONGODB_NAME,
     uri: process.env.MONGODB_URI,
   },
+  jwt: {
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || '',
+  },
 };

@@ -1,5 +1,3 @@
-const MODELS = {
+export const MODELS = {
   accounts: 'Accounts',
 };
-
-export { MODELS };

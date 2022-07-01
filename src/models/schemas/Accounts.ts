@@ -26,7 +26,7 @@ export const AccountsSchema = new Schema<Accounts>(
   }
 );
 
-AccountsSchema.index({ fullname: 'text', username: 'text' });
+AccountsSchema.index({ fullname: 1, username: 1 });
 
 AccountsSchema.pre('save', async function (this: Accounts, next: (err?: Error | undefined) => void) {
   if (!this.isModified('password')) {
@@ -39,13 +39,13 @@ AccountsSchema.pre('save', async function (this: Accounts, next: (err?: Error | 
   next();
 });
 
-AccountsSchema.methods.isCheckPassword = async function (this: Accounts, password: string) {
+AccountsSchema.method('isCheckPassword', async function (password: string, user: Accounts) {
   try {
-    return await bcypt.compare(password, this.password);
+    return await bcypt.compare(password, user.password);
   } catch (error) {
     return false;
   }
-};
+});
 
 const AccountsModel: Model<Accounts> = model<Accounts>(MODELS.accounts, AccountsSchema);
 export default AccountsModel;

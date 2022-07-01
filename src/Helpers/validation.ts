@@ -22,4 +22,13 @@ const usersValidate = (body: Request) => {
   return userSchema.validate(body);
 };
 
-export { usersValidate };
+const loginValidate = (body: Request) => {
+  const loginSchema = Joi.object({
+    username: Joi.string().min(5).max(128).required(),
+    password: Joi.string().min(5).max(128).required(),
+  });
+
+  return loginSchema.validate(body);
+};
+
+export { usersValidate, loginValidate };
