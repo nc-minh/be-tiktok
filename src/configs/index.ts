@@ -23,4 +23,14 @@ export default {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET || '',
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || '',
   },
+  elasticsearch: {
+    protocol: process.env.ELASTIC_PROTOCOL,
+    username: process.env.ELASTIC_USERNAME,
+    pasword: process.env.ELASTIC_PASSWORD,
+    host: process.env.ELASTIC_HOST,
+    index: process.env.ELASTIC_INDEX,
+    type: process.env.ELASTIC_TYPE,
+    collectionName: process.env.ELASTIC_COLLECTION_NAME,
+    url: process.env.ELASTIC_URL
+  },
 };

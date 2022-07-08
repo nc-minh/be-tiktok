@@ -1,11 +1,11 @@
 import { Request, NextFunction } from 'express';
 
-import { usersValidate } from 'Helpers/validation';
+import { usersValidate } from 'helpers/validation';
 import { AccountsModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { QUERY_DELETED } from 'utils/constants/query';
 
-const createAccounts = async (req: Request, next: NextFunction) => {
+export const createAccounts = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
   const { username } = req.body;
   try {
@@ -37,7 +37,7 @@ const createAccounts = async (req: Request, next: NextFunction) => {
   }
 };
 
-const updateAccounts = async (req: Request, next: NextFunction) => {
+export const updateAccounts = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
   const { fullname, nickname, avatar, bio, website_url, social_network } = req.body;
   const username = req.params.username;
@@ -50,9 +50,19 @@ const updateAccounts = async (req: Request, next: NextFunction) => {
         error.details[0].message,
         StatusCode.BadRequest.name
       );
-    
+
     const result = await AccountsModel.findOneAndUpdate({});
   } catch (error) {}
 };
 
-export { createAccounts, updateAccounts };
+export const randomUsers = async (req: Request, next: NextFunction) => {
+  const { username } = req.body;
+  try {
+    // const accounts = new AccountsModel(req.body);
+    // const result = await accounts.save();
+    return null;
+  } catch (error) {
+    next(error);
+  }
+};
+

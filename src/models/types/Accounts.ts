@@ -9,12 +9,11 @@ export default interface Accounts extends Document {
   avatar?: string;
   bio?: string;
   fullname: string;
-  nickname: string;
   username: string;
   password: string;
-  is_enabled: boolean;
-  is_deleted: boolean;
-  tick: boolean;
+  is_enabled?: boolean;
+  is_deleted?: boolean;
+  tick?: boolean;
   followings_count?: number;
   followers_count?: number;
   likes_count?: number;

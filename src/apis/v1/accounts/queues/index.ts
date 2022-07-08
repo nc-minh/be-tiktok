@@ -16,6 +16,7 @@ export const getAllUsers = async (next: NextFunction) => {
 
 export const searchAllUsers = async (req: Request, next: NextFunction) => {
   const { q, type } = req.query;
+  
   try {
     if (type === 'less') {
       const result = await AccountsModel.find({

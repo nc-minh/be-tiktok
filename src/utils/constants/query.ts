@@ -7,3 +7,5 @@ export const QUERY_DELETED = {
 export const QUERY_DELETED_TRUE = {
   is_deleted: true,
 };
+
+export const PAGE_SIZE = 20

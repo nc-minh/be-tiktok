@@ -24,3 +24,8 @@ export const getUserinfo = async (req: Request, res: Response, next: NextFunctio
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
 
+export const randomUsers = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await service.randomUsers(req, next);
+  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
+};
+
