@@ -4,8 +4,8 @@ import { ApiResponse } from 'utils/rest';
 import * as service from './service';
 import * as queues from './queues';
 
-export const createAccounts = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const result = await service.createAccounts(req, next);
+export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await service.createUser(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
 

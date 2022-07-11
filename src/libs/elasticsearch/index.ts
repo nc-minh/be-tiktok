@@ -1,5 +1,5 @@
 import { CreateIndicesTypes, DeleteDataTypes, IndexTypes } from './types';
-import Accounts from 'models/types/Accounts';
+import User from 'models/types/User';
 
 export class MongodbSubmitToElasticSearch {
   public client: any;

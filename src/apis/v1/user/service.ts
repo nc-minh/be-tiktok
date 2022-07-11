@@ -1,11 +1,11 @@
 import { Request, NextFunction } from 'express';
 
 import { usersValidate } from 'helpers/validation';
-import { AccountsModel } from 'models';
+import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { QUERY_DELETED } from 'utils/constants/query';
 
-export const createAccounts = async (req: Request, next: NextFunction) => {
+export const createUser = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
   const { username } = req.body;
   try {
@@ -17,7 +17,7 @@ export const createAccounts = async (req: Request, next: NextFunction) => {
         StatusCode.BadRequest.name
       );
 
-    const isExits = await AccountsModel.findOne({
+    const isExits = await UserModel.findOne({
       username,
     });
 
@@ -27,9 +27,9 @@ export const createAccounts = async (req: Request, next: NextFunction) => {
       );
     }
 
-    const accounts = new AccountsModel(req.body);
+    const user = new UserModel(req.body);
 
-    const result = await accounts.save();
+    const result = await user.save();
 
     return result;
   } catch (error) {
@@ -37,7 +37,7 @@ export const createAccounts = async (req: Request, next: NextFunction) => {
   }
 };
 
-export const updateAccounts = async (req: Request, next: NextFunction) => {
+export const updateUser = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
   const { fullname, nickname, avatar, bio, website_url, social_network } = req.body;
   const username = req.params.username;
@@ -51,15 +51,13 @@ export const updateAccounts = async (req: Request, next: NextFunction) => {
         StatusCode.BadRequest.name
       );
 
-    const result = await AccountsModel.findOneAndUpdate({});
+    const result = await UserModel.findOneAndUpdate({});
   } catch (error) {}
 };
 
 export const randomUsers = async (req: Request, next: NextFunction) => {
   const { username } = req.body;
   try {
-    // const accounts = new AccountsModel(req.body);
-    // const result = await accounts.save();
     return null;
   } catch (error) {
     next(error);

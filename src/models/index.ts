@@ -1,3 +1,3 @@
-import AccountsModel from './schemas/Accounts';
+import UserModel from './schemas/User';
 
-export { AccountsModel };
+export { UserModel };

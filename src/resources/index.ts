@@ -4,7 +4,7 @@ import configs from 'configs';
 import connectMongo from './mongo';
 import { client } from './elasticsearch';
 import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
-import { AccountsModel } from 'models';
+import { UserModel } from 'models';
 
 export default async () => {
   try {
@@ -23,4 +23,4 @@ export default async () => {
   }
 };
 
-export const MongoEs = new MongodbSubmitToElasticSearch(client, AccountsModel);
+export const MongoEs = new MongodbSubmitToElasticSearch(client, UserModel);

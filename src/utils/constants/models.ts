@@ -1,3 +1,11 @@
 export const MODELS = {
-  accounts: 'Accounts',
+  user: 'user',
+  follower: 'follower',
+  following: 'following',
+  post: 'post',
+  media: 'media',
+  category: 'category',
+  comment: 'comment',
+  post_reaction: 'post_reaction',
+  comment_reaction: 'comment_reaction'
 };

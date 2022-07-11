@@ -1,11 +1,11 @@
 import { Request, NextFunction } from 'express';
 
 import { usersValidate } from 'helpers/validation';
-import { AccountsModel } from 'models';
+import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { PAGE_SIZE, QUERY_DELETED, QUERY_IGNORE } from 'utils/constants/query';
 import { client } from 'resources/elasticsearch';
-import Accounts from 'models/types/Accounts';
+import User from 'models/types/User';
 import { MODELS } from 'utils/constants/models';
 import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
 import { body } from 'libs/elasticsearch/settings';
@@ -21,8 +21,8 @@ export const searchAllUsers = async (req: Request, next: NextFunction) => {
     const CURRENT_PAGE: number = Number(currentPage);
 
     if (q) {
-      const result = await client.search<Accounts>({
-        index: MODELS.accounts.toLowerCase(),
+      const result = await client.search<User>({
+        index: MODELS.user.toLowerCase(),
         query: {
           match: {
             fullname: q.toString(),
@@ -39,8 +39,8 @@ export const searchAllUsers = async (req: Request, next: NextFunction) => {
         total: result?.hits?.total,
       };
     } else {
-      const result = await client.search<Accounts>({
-        index: MODELS.accounts.toLowerCase(),
+      const result = await client.search<User>({
+        index: MODELS.user.toLowerCase(),
         query: {
           match_all: {},
         },

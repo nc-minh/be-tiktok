@@ -1,11 +1,11 @@
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 interface SocialNetwork {
   name: string;
   url: string;
 }
 
-export default interface Accounts extends Document {
+export default interface User extends Document {
   avatar?: string;
   bio?: string;
   fullname: string;
@@ -18,6 +18,6 @@ export default interface Accounts extends Document {
   followers_count?: number;
   likes_count?: number;
   website_url?: number;
-  social_network?: Types.DocumentArray<SocialNetwork>;
+  social_network?: SocialNetwork[];
   role: string;
 }

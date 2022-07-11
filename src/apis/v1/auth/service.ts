@@ -2,7 +2,7 @@ import { NextFunction, Request } from 'express';
 
 import { HttpException, StatusCode } from 'exceptions';
 import { loginValidate } from 'helpers/validation';
-import { AccountsModel } from 'models';
+import { UserModel } from 'models';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from 'helpers/jwt';
 import { QUERY_DELETED, QUERY_DELETED_TRUE } from 'utils/constants/query';
 import { RefreshTokenPayload } from 'types/auth';
@@ -32,7 +32,7 @@ export const login = async (req: Request, next: NextFunction) => {
       );
     }
 
-    const deletedUser = await AccountsModel.findOne({ username, ...QUERY_DELETED_TRUE });
+    const deletedUser = await UserModel.findOne({ username, ...QUERY_DELETED_TRUE });
     if (deletedUser) {
       throw new HttpException(
         'DeletedError',
@@ -42,7 +42,7 @@ export const login = async (req: Request, next: NextFunction) => {
       );
     }
 
-    const user = await AccountsModel.findOne({ username, ...QUERY_DELETED });
+    const user = await UserModel.findOne({ username, ...QUERY_DELETED });
     if (!user) {
       throw new HttpException(
         'NotFoundError',

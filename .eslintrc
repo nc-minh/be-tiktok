@@ -26,9 +26,9 @@
       "ignoreRestSiblings": false
     }],
     "@typescript-eslint/naming-convention": [
-      "error",
+      "warn",
       {
-        "selector": "default",
+        "selector": "variable",
         "format": ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"],
         "leadingUnderscore": "allow"
       }

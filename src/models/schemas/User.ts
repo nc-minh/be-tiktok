@@ -2,9 +2,9 @@ import { model, Model, Schema } from 'mongoose';
 import bcypt from 'bcrypt';
 
 import { MODELS } from 'utils/constants/models';
-import Accounts from '../types/Accounts';
+import User from '../types/User';
 
-export const AccountsSchema = new Schema<Accounts>(
+export const UserSchema = new Schema<User>(
   {
     fullname: { type: String, required: true },
     username: { type: String, required: true, unique: true },
@@ -26,9 +26,9 @@ export const AccountsSchema = new Schema<Accounts>(
   }
 );
 
-AccountsSchema.index({ fullname: 1, username: 1 });
+UserSchema.index({ fullname: 1, username: 1 });
 
-AccountsSchema.pre('save', async function (this: Accounts, next: (err?: Error | undefined) => void) {
+UserSchema.pre('save', async function (this: User, next: (err?: Error | undefined) => void) {
   if (!this.isModified('password')) {
     return next();
   }
@@ -39,7 +39,7 @@ AccountsSchema.pre('save', async function (this: Accounts, next: (err?: Error | 
   next();
 });
 
-AccountsSchema.method('isCheckPassword', async function (password: string, user: Accounts) {
+UserSchema.method('isCheckPassword', async function (password: string, user: User) {
   try {
     return await bcypt.compare(password, user.password);
   } catch (error) {
@@ -47,5 +47,5 @@ AccountsSchema.method('isCheckPassword', async function (password: string, user:
   }
 });
 
-const AccountsModel: Model<Accounts> = model<Accounts>(MODELS.accounts, AccountsSchema);
-export default AccountsModel;
+const UserModel: Model<User> = model<User>(MODELS.user, UserSchema, MODELS.user);
+export default UserModel;
