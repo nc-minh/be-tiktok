@@ -3,7 +3,6 @@ import { faker } from '@faker-js/faker';
 
 import { AccountsModel } from 'models';
 import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
-import { client } from 'resources/elasticsearch';
 import { MongoEs } from 'resources';
 
 export const randomUsers = async (req: Request, next: NextFunction) => {
@@ -636,8 +635,6 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
       // });
 
       // await accounts.save();
-
-      const test = new MongodbSubmitToElasticSearch(client, AccountsModel);
       const okok = await MongoEs.save({
         username: fullname.toLowerCase().split(' ').join('') + Math.floor(Math.random() * 999999999),
         password: 'admin',

@@ -9,7 +9,9 @@ const userNamePwd = elasticSearchConfig.username
   ? `${elasticSearchConfig.username}:${elasticSearchConfig.pasword}@`
   : '';
 
-const elasticSearchUrl = `${elasticSearch}://${userNamePwd}${elasticSearchConfig.host}`;
+const elasticSearchHost = elasticSearchConfig.host ? elasticSearchConfig.host : 'localhost:9200';
+
+const elasticSearchUrl = `${elasticSearch}://${userNamePwd}${elasticSearchHost}`;
 
 export const client = new Client({
   node: elasticSearchUrl,
