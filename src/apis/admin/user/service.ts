@@ -2,8 +2,6 @@ import { Request, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 
 import { UserModel } from 'models';
-import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
-import { MongoEs } from 'resources';
 
 export const randomUsers = async (req: Request, next: NextFunction) => {
   try {
@@ -619,6 +617,7 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
       },
     ];
 
+
     for (let i = 0; i < 500; i++) {
       const fullname =
         surname[Math.floor(Math.random() * (surname.length - 1))].name +
@@ -627,13 +626,17 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
         ' ' +
         name[Math.floor(Math.random() * (name.length - 1))].name;
 
-      // await user.save();
-      const okok = await MongoEs.save({
+      const user = new UserModel({
         username: fullname.toLowerCase().split(' ').join('') + Math.floor(Math.random() * 999999999),
         password: 'admin',
         fullname: fullname,
         avatar: faker.image.avatar(),
       });
+      const result = await user.save();
+
+      if (!result) {
+        return result;
+      }
     }
 
     return 'OK';

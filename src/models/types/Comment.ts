@@ -8,4 +8,5 @@ export default interface Comment extends Document {
   post_id: Post;
   contents: string;
   media_url?: string;
+  comment_reaction_count: number;
 }

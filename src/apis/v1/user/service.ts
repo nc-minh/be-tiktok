@@ -1,9 +1,10 @@
 import { Request, NextFunction } from 'express';
 
-import { usersValidate } from 'helpers/validation';
+import { usersValidate, userUpdateValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { QUERY_DELETED } from 'utils/constants/query';
+import { MongooseCustom } from 'libs/mongodb';
 
 export const createUser = async (req: Request, next: NextFunction) => {
   const { error } = usersValidate(req.body);
@@ -38,9 +39,10 @@ export const createUser = async (req: Request, next: NextFunction) => {
 };
 
 export const updateUser = async (req: Request, next: NextFunction) => {
-  const { error } = usersValidate(req.body);
-  const { fullname, nickname, avatar, bio, website_url, social_network } = req.body;
-  const username = req.params.username;
+  const { error } = userUpdateValidate(req.body);
+  const { fullname, username, avatar, bio, website_url, social_network } = req.body;
+  const user = req.user;
+  const userID = user.userID;
 
   try {
     if (error)
@@ -51,16 +53,58 @@ export const updateUser = async (req: Request, next: NextFunction) => {
         StatusCode.BadRequest.name
       );
 
-    const result = await UserModel.findOneAndUpdate({});
-  } catch (error) {}
-};
+    const isExits = await UserModel.findOne({
+      username,
+    });
 
-export const randomUsers = async (req: Request, next: NextFunction) => {
-  const { username } = req.body;
-  try {
-    return null;
+    const userIdFound = isExits?._id.toString();
+
+    if (isExits && userIdFound !== userID) {
+      return next(
+        new HttpException('CreateError', StatusCode.BadRequest.status, 'Username is aready', StatusCode.BadRequest.name)
+      );
+    }
+
+    const updateDoc = {
+      $set: {
+        fullname,
+        username,
+        avatar,
+        bio,
+        website_url,
+        social_network,
+      },
+    };
+
+    const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc);
+    return result;
   } catch (error) {
     next(error);
   }
 };
 
+export const softDeleteUser = async (req: Request, next: NextFunction) => {
+  const user = req.user;
+  const userID = user.userID;
+
+  try {
+    const mongooseCustom = new MongooseCustom(UserModel);
+    const result = await mongooseCustom.findOneAndSoftDelete(userID);
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const restoreUser = async (req: Request, next: NextFunction) => {
+  const user = req.user;
+  const userID = user.userID;
+
+  try {
+    const mongooseCustom = new MongooseCustom(UserModel);
+    const result = await mongooseCustom.findOneAndRestore(userID);
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};

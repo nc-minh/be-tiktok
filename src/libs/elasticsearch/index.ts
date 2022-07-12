@@ -23,15 +23,18 @@ export class MongodbSubmitToElasticSearch {
 
   // data
   public async save(data: any): Promise<any> {
+    let dataIfError;
     try {
+
       const newData = new this.model(data);
 
       const result = await newData.save();
+      dataIfError = result;
 
       if (!result) throw new Error();
+      
 
       const { _id, ...newResult } = result.toObject();
-
       const r = await this.client.index({
         index: this.model.modelName.toLowerCase(),
         type: '_doc',
@@ -40,8 +43,11 @@ export class MongodbSubmitToElasticSearch {
           ...newResult,
         },
       });
+
       return r;
     } catch (error) {
+      await this.model.deleteOne({ _id: dataIfError._id });
+      
       return error;
     }
   }

@@ -12,6 +12,3 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
   const result = await service.refreshToken(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
-
- 
- 

@@ -31,6 +31,6 @@ export default {
     index: process.env.ELASTIC_INDEX,
     type: process.env.ELASTIC_TYPE,
     collectionName: process.env.ELASTIC_COLLECTION_NAME,
-    url: process.env.ELASTIC_URL
+    url: process.env.ELASTIC_URL,
   },
 };

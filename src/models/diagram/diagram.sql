@@ -27,8 +27,8 @@ CREATE TABLE [follower] (
 )
 GO
 
-CREATE TABLE [follow] (
-  [follow_id] nvarchar(255),
+CREATE TABLE [following] (
+  [following_id] nvarchar(255),
   [user_id] nvarchar(255),
   [created_at] datetime,
   [updated_at] datetime
@@ -44,7 +44,7 @@ CREATE TABLE [category] (
 GO
 
 CREATE TABLE [media] (
-  [_id] nvarchar(255),
+  [post_id] nvarchar(255),
   [url] nvarchar(255),
   [created_at] datetime,
   [updated_at] datetime
@@ -55,7 +55,6 @@ CREATE TABLE [post] (
   [_id] nvarchar(255) PRIMARY KEY,
   [user_id] nvarchar(255),
   [contents] nvarchar(255),
-  [media_id] nvarchar(255),
   [category_id] nvarchar(255),
   [reaction_count] int DEFAULT (0),
   [view_count] int DEFAULT (0),
@@ -79,6 +78,7 @@ CREATE TABLE [comment] (
   [post_id] nvarchar(255),
   [contents] nvarchar(255),
   [media_url] nvarchar(255),
+  [comment_reaction_count] int,
   [created_at] datetime,
   [updated_at] datetime
 )
@@ -99,13 +99,13 @@ GO
 ALTER TABLE [category] ADD FOREIGN KEY ([_id]) REFERENCES [post] ([category_id])
 GO
 
-ALTER TABLE [post] ADD FOREIGN KEY ([media_id]) REFERENCES [media] ([_id])
+ALTER TABLE [post] ADD FOREIGN KEY ([_id]) REFERENCES [media] ([post_id])
 GO
 
 ALTER TABLE [follower] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
-ALTER TABLE [follow] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
+ALTER TABLE [following] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
 ALTER TABLE [post_reaction] ADD FOREIGN KEY ([post_id]) REFERENCES [post] ([_id])

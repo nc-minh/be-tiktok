@@ -4,15 +4,16 @@ import { MODELS } from 'utils/constants/models';
 import Comment from '../types/Comment';
 
 export const CommentSchema = new Schema<Comment>(
-	{
-		user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
-		post_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },
-		contents: { type: String, required: true },
-		media_url: { type: String },
-	},
-	{
-		timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-	}
+  {
+    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
+    post_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },
+    contents: { type: String, required: true },
+    media_url: { type: String },
+    comment_reaction_count: { type: Number, default: 0 },
+  },
+  {
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  }
 );
 
 CommentSchema.index({ user_id: 1, post_id: 1 });

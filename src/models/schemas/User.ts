@@ -9,15 +9,15 @@ export const UserSchema = new Schema<User>(
     fullname: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    avatar: { type: String },
-    bio: { type: String },
+    avatar: { type: String, default: '' },
+    bio: { type: String, default: '' },
     is_enabled: { type: Boolean, default: true },
     is_deleted: { type: Boolean, default: false },
     tick: { type: Boolean, default: false },
     followings_count: { type: Number, default: 0 },
     followers_count: { type: Number, default: 0 },
     likes_count: { type: Number, default: 0 },
-    website_url: { type: String },
+    website_url: { type: String, default: '' },
     social_network: [{ name: String, url: String }],
     role: { type: String, default: 'user' },
   },
@@ -26,7 +26,7 @@ export const UserSchema = new Schema<User>(
   }
 );
 
-UserSchema.index({ fullname: 1, username: 1 });
+UserSchema.index({ fullname: 'text', username: 'text' });
 
 UserSchema.pre('save', async function (this: User, next: (err?: Error | undefined) => void) {
   if (!this.isModified('password')) {

@@ -16,4 +16,3 @@ const elasticSearchUrl = `${elasticSearch}://${userNamePwd}${elasticSearchHost}`
 export const client = new Client({
   node: elasticSearchUrl,
 });
-

@@ -7,5 +7,5 @@ export const MODELS = {
   category: 'category',
   comment: 'comment',
   post_reaction: 'post_reaction',
-  comment_reaction: 'comment_reaction'
+  comment_reaction: 'comment_reaction',
 };

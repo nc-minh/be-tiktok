@@ -6,6 +6,7 @@
     "prettier"
   ],
   "extends": [
+    "eslint:recommended",
     "airbnb-typescript/base",
     "plugin:prettier/recommended"
   ],
@@ -26,9 +27,9 @@
       "ignoreRestSiblings": false
     }],
     "@typescript-eslint/naming-convention": [
-      "warn",
+      "error",
       {
-        "selector": "variable",
+        "selector": "default",
         "format": ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"],
         "leadingUnderscore": "allow"
       }

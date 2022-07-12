@@ -7,7 +7,6 @@ import { PAGE_SIZE, QUERY_DELETED, QUERY_IGNORE } from 'utils/constants/query';
 import { client } from 'resources/elasticsearch';
 import User from 'models/types/User';
 import { MODELS } from 'utils/constants/models';
-import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
 import { body } from 'libs/elasticsearch/settings';
 import { MongoEs } from 'resources';
 

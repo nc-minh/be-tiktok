@@ -15,4 +15,3 @@ export const test = async (req: Request, res: Response, next: NextFunction): Pro
 
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
-

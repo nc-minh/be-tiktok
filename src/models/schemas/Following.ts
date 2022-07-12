@@ -4,13 +4,13 @@ import { MODELS } from 'utils/constants/models';
 import Following from '../types/Following';
 
 export const FollowingSchema = new Schema<Following>(
-	{
-		following_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
-		user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
-	},
-	{
-		timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-	}
+  {
+    following_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
+    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
+  },
+  {
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  }
 );
 
 FollowingSchema.index({ following_id: 1, user_id: 1 });
