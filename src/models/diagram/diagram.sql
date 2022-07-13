@@ -43,21 +43,15 @@ CREATE TABLE [category] (
 )
 GO
 
-CREATE TABLE [media] (
-  [post_id] nvarchar(255),
-  [url] nvarchar(255),
-  [created_at] datetime,
-  [updated_at] datetime
-)
-GO
-
 CREATE TABLE [post] (
   [_id] nvarchar(255) PRIMARY KEY,
   [user_id] nvarchar(255),
   [contents] nvarchar(255),
-  [category_id] nvarchar(255),
+  [media_url] nvarchar(255),
+  [category_id] Array,
   [reaction_count] int DEFAULT (0),
   [view_count] int DEFAULT (0),
+  [is_deleted] boolean,
   [created_at] datetime,
   [updated_at] datetime
 )
@@ -97,9 +91,6 @@ ALTER TABLE [post] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
 ALTER TABLE [category] ADD FOREIGN KEY ([_id]) REFERENCES [post] ([category_id])
-GO
-
-ALTER TABLE [post] ADD FOREIGN KEY ([_id]) REFERENCES [media] ([post_id])
 GO
 
 ALTER TABLE [follower] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])

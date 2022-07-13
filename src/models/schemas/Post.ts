@@ -7,6 +7,7 @@ export const PostSchema = new Schema<Post>(
   {
     user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
     contents: { type: String, required: true },
+    media_url: { type: String, default: '' },
     category_id: [
       {
         type: Schema.Types.ObjectId,
@@ -15,6 +16,7 @@ export const PostSchema = new Schema<Post>(
     ],
     reaction_count: { type: Number, default: 0 },
     view_count: { type: Number, default: 0 },
+    is_deleted: { type: Boolean, default: false },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },

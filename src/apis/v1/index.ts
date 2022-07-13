@@ -2,9 +2,13 @@ import { Router } from 'express';
 import homeRouter from './home';
 import userRouter from './users';
 import authRouter from './auth';
+import postRouter from './posts';
+import categoryRouter from './categories';
 
 const router = Router();
 
+router.use('/categories', categoryRouter);
+router.use('/posts', postRouter);
 router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use('/', homeRouter);
