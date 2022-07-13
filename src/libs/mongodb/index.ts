@@ -22,4 +22,22 @@ export class MongooseCustom {
       return error;
     }
   }
+
+  public async findOneAndDisable(id: string): Promise<any> {
+    try {
+      const result = await this.model.findOneAndUpdate({ _id: id }, { is_enabled: false });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async findOneAndEnable(id: string): Promise<any> {
+    try {
+      const result = await this.model.findOneAndUpdate({ _id: id }, { is_enabled: true });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
 }

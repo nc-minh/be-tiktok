@@ -4,7 +4,6 @@ import { HttpException, StatusCode } from 'exceptions';
 import { loginValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from 'helpers/jwt';
-import { QUERY_DELETED, QUERY_DELETED_TRUE } from 'utils/constants/query';
 import { RefreshTokenPayload } from 'types/auth';
 
 export const login = async (req: Request, next: NextFunction) => {
@@ -32,17 +31,31 @@ export const login = async (req: Request, next: NextFunction) => {
       );
     }
 
-    const deletedUser = await UserModel.findOne({ username, ...QUERY_DELETED_TRUE });
-    if (deletedUser) {
+    const lockedUser = await UserModel.findOne({ username });
+
+    if (lockedUser?.is_deleted === true) {
       throw new HttpException(
-        'DeletedError',
+        'LockedError',
         StatusCode.NotFound.status,
         'Your account has been locked',
         StatusCode.NotFound.name
       );
     }
 
-    const user = await UserModel.findOne({ username, ...QUERY_DELETED });
+    if (lockedUser?.is_enabled === false) {
+      const accessToken = await signAccessToken(lockedUser._id, lockedUser.role);
+      const refreshToken = await signRefreshToken(lockedUser._id, lockedUser.role);
+      return {
+        token: {
+          accessToken,
+          refreshToken,
+        },
+        message: 'Your account has been disabled',
+        statusCode: 'DISABLED',
+      };
+    }
+
+    const user = await UserModel.findOne({ username });
     if (!user) {
       throw new HttpException(
         'NotFoundError',

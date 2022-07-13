@@ -3,7 +3,6 @@ import { Request, NextFunction } from 'express';
 import { usersValidate, userUpdateValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
-import { QUERY_DELETED } from 'utils/constants/query';
 import { MongooseCustom } from 'libs/mongodb';
 
 export const createUser = async (req: Request, next: NextFunction) => {
@@ -77,6 +76,32 @@ export const updateUser = async (req: Request, next: NextFunction) => {
     };
 
     const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc);
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const disableUser = async (req: Request, next: NextFunction) => {
+  const user = req.user;
+  const userID = user.userID;
+
+  try {
+    const mongooseCustom = new MongooseCustom(UserModel);
+    const result = await mongooseCustom.findOneAndDisable(userID);
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const enableUser = async (req: Request, next: NextFunction) => {
+  const user = req.user;
+  const userID = user.userID;
+
+  try {
+    const mongooseCustom = new MongooseCustom(UserModel);
+    const result = await mongooseCustom.findOneAndEnable(userID);
     return result;
   } catch (error) {
     next(error);

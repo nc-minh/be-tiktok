@@ -2,8 +2,10 @@ import { Request, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 
 import { UserModel } from 'models';
+import { MongooseCustom } from 'libs/mongodb';
 
 export const randomUsers = async (req: Request, next: NextFunction) => {
+  const { quantity } = req.query;
   try {
     const surname = [
       {
@@ -617,8 +619,7 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
       },
     ];
 
-
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < Number(quantity); i++) {
       const fullname =
         surname[Math.floor(Math.random() * (surname.length - 1))].name +
         ' ' +
@@ -644,3 +645,4 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
     next(error);
   }
 };
+
