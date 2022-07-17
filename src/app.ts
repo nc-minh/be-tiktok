@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import noCache from 'nocache';

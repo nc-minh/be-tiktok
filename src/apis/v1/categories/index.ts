@@ -1,10 +1,19 @@
 import { Router } from 'express';
-import { createCategory, updateCategory, forceDeleteCategory } from './controller';
+import { adminAuthMiddleware } from 'middlewares/auth';
+import {
+  createCategory,
+  updateCategory,
+  forceDeleteCategory,
+  getAllCategories,
+  getAllPostsOfCategory,
+} from './controller';
 
 const router = Router();
 
-router.post('/', createCategory);
-router.patch('/', updateCategory);
-router.delete('/', forceDeleteCategory);
+router.post('/', adminAuthMiddleware, createCategory);
+router.patch('/', adminAuthMiddleware, updateCategory);
+router.delete('/', adminAuthMiddleware, forceDeleteCategory);
+router.get('/', getAllCategories);
+router.get('/:id', getAllPostsOfCategory);
 
 export default router;

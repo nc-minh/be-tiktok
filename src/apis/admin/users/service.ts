@@ -630,7 +630,7 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
       const user = new UserModel({
         username: fullname.toLowerCase().split(' ').join('') + Math.floor(Math.random() * 999999999),
         password: 'admin',
-        fullname: fullname,
+        fullname,
         avatar: faker.image.avatar(),
       });
       const result = await user.save();
@@ -645,4 +645,3 @@ export const randomUsers = async (req: Request, next: NextFunction) => {
     next(error);
   }
 };
-

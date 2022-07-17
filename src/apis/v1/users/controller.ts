@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { ApiResponse, Meta } from 'utils/rest';
 import * as service from './service';
-import * as queues from './queues';
+import * as queries from './queries';
 
 export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const result = await service.createUser(req, next);
@@ -10,19 +10,19 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 };
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const result = await queues.getAllUsers(req, next);
+  const result = await queries.getAllUsers(req, next);
   const meta = new Meta(result?.currentPage, result?.length, result?.total);
   if (result) new ApiResponse(result.data, 'OK', 200, Date.now() - req.startTime, Object(meta)).send(res);
 };
 
 export const searchAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const result = await queues.searchAllUsers(req, next);
+  const result = await queries.searchAllUsers(req, next);
   const meta = new Meta(result?.currentPage, result?.length, result?.total);
   if (result) new ApiResponse(result.data, 'OK', 200, Date.now() - req.startTime, Object(meta)).send(res);
 };
 
 export const getUserinfo = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const result = await queues.getUserinfo(req, next);
+  const result = await queries.getUserinfo(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
 

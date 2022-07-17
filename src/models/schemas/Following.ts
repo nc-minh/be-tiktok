@@ -3,7 +3,7 @@ import { model, Model, Schema } from 'mongoose';
 import { MODELS } from 'utils/constants/models';
 import Following from '../types/Following';
 
-export const FollowingSchema = new Schema<Following>(
+const FollowingSchema = new Schema<Following>(
   {
     following_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
     user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },

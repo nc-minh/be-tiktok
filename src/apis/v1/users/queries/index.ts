@@ -2,7 +2,7 @@ import { HttpException, StatusCode } from 'exceptions';
 import { Request, NextFunction } from 'express';
 
 import { UserModel } from 'models';
-import { QUERY_LOCKED, QUERY_IGNORE, PAGE_SIZE } from 'utils/constants/query';
+import { QUERY_LOCKED_IGNORE, QUERY_IGNORE, PAGE_SIZE } from 'utils/constants/query';
 
 export const getAllUsers = async (req: Request, next: NextFunction) => {
   const { pageSize = PAGE_SIZE, currentPage = 1 } = req.query;
@@ -12,12 +12,12 @@ export const getAllUsers = async (req: Request, next: NextFunction) => {
     const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
     const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
 
-    const result = await UserModel.find({ ...QUERY_LOCKED })
+    const result = await UserModel.find({ ...QUERY_LOCKED_IGNORE })
       .select(QUERY_IGNORE)
       .skip(FROM)
       .limit(SIZE);
 
-    const count = await UserModel.count({ ...QUERY_LOCKED });
+    const count = await UserModel.count({ ...QUERY_LOCKED_IGNORE });
 
     return {
       data: result,
@@ -42,7 +42,7 @@ export const searchAllUsers = async (req: Request, next: NextFunction) => {
       $text: {
         $search: String(q),
       },
-      ...QUERY_LOCKED,
+      ...QUERY_LOCKED_IGNORE,
     });
 
     if (type === 'less') {
@@ -50,7 +50,7 @@ export const searchAllUsers = async (req: Request, next: NextFunction) => {
         $text: {
           $search: String(q),
         },
-        ...QUERY_LOCKED,
+        ...QUERY_LOCKED_IGNORE,
       })
         .select(QUERY_IGNORE)
         .limit(5);
@@ -66,7 +66,7 @@ export const searchAllUsers = async (req: Request, next: NextFunction) => {
       $text: {
         $search: String(q),
       },
-      ...QUERY_LOCKED,
+      ...QUERY_LOCKED_IGNORE,
     })
       .select(QUERY_IGNORE)
       .skip(FROM)
@@ -87,7 +87,7 @@ export const getUserinfo = async (req: Request, next: NextFunction) => {
   try {
     const _id = req.user.userID;
 
-    const result = await UserModel.findOne({ _id, ...QUERY_LOCKED }).select(QUERY_IGNORE);
+    const result = await UserModel.findOne({ _id, ...QUERY_LOCKED_IGNORE }).select(QUERY_IGNORE);
 
     if (!result) {
       throw new HttpException(

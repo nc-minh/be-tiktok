@@ -4,7 +4,7 @@ import { ReactionTypes } from 'models/types/ReactionTypes';
 import { MODELS } from 'utils/constants/models';
 import CommentReaction from '../types/CommentReaction';
 
-export const CommentReactionSchema = new Schema<CommentReaction>(
+const CommentReactionSchema = new Schema<CommentReaction>(
   {
     user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
     comment_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.comment },

@@ -1,8 +1,12 @@
-export const QUERY_IGNORE = '-password -is_deleted -is_enabled';
+export const QUERY_IGNORE = '-password -is_deleted -is_enabled -role';
 
-export const QUERY_LOCKED = {
+export const QUERY_LOCKED_IGNORE = {
   is_deleted: false,
   is_enabled: true,
+};
+
+export const QUERY_DELETED_IGNORE = {
+  is_deleted: false,
 };
 
 export const QUERY_DELETED = {

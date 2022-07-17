@@ -37,7 +37,7 @@ export const adminAuthMiddleware = async (req: Request, res: Response, next: Nex
       throw new HttpException(
         'AuthorizationError',
         StatusCode.Unauthorized.status,
-        'You are not admin',
+        'You are not logged in',
         StatusCode.Unauthorized.name
       );
     }
@@ -48,7 +48,16 @@ export const adminAuthMiddleware = async (req: Request, res: Response, next: Nex
 
     const verify = JWT.verify(token, configs.jwt.accessTokenSecret);
     req.user = verify;
-    if (req.user.role === 'admin') next();
+    if (req.user.role === 'admin') {
+      next();
+    } else {
+      throw new HttpException(
+        'AuthorizationError',
+        StatusCode.Unauthorized.status,
+        'You are not admin',
+        StatusCode.Unauthorized.name
+      );
+    }
   } catch (error: any) {
     next({
       name: error.name,

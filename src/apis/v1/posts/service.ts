@@ -1,8 +1,8 @@
 import { NextFunction, Request } from 'express';
 
 import { HttpException, StatusCode } from 'exceptions';
-import { postValidate } from 'helpers/validation';
-import PostModel from 'models/schemas/Post';
+import { postValidate, updatePostValidate } from 'helpers/validation';
+import { PostModel } from 'models';
 import { MongooseCustom } from 'libs/mongodb';
 
 export const createPost = async (req: Request, next: NextFunction) => {
@@ -39,8 +39,8 @@ export const updatePost = async (req: Request, next: NextFunction) => {
     ...req.body,
     user_id: userID,
   };
-  const { error } = postValidate(reqBody);
-  const { post_id, contents, media_url, categody_id } = req.body;
+  const { error } = updatePostValidate(reqBody);
+  const { post_id, contents, media_url, category_id } = req.body;
 
   try {
     if (error)
@@ -55,11 +55,20 @@ export const updatePost = async (req: Request, next: NextFunction) => {
       $set: {
         contents,
         media_url,
-        categody_id,
+        category_id,
       },
     };
 
     const result = await PostModel.findOneAndUpdate({ _id: post_id }, updateDoc);
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);
@@ -72,6 +81,15 @@ export const softDeletePost = async (req: Request, next: NextFunction) => {
   try {
     const mongooseCustom = new MongooseCustom(PostModel);
     const result = await mongooseCustom.findOneAndSoftDelete(post_id);
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);
@@ -84,6 +102,15 @@ export const restorePost = async (req: Request, next: NextFunction) => {
   try {
     const mongooseCustom = new MongooseCustom(PostModel);
     const result = await mongooseCustom.findOneAndRestore(post_id);
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);
@@ -95,6 +122,15 @@ export const forceDeletePost = async (req: Request, next: NextFunction) => {
 
   try {
     const result = await PostModel.findOneAndDelete({ _id: post_id });
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);

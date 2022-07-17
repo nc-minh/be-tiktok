@@ -6,5 +6,5 @@ import Post from './Post';
 export default interface PostReaction extends Document {
   user_id: User;
   post_id: Post;
-  type: String;
+  type: string;
 }

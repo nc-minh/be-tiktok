@@ -1,6 +1,6 @@
 import { Request, NextFunction } from 'express';
 
-import { usersValidate, userUpdateValidate } from 'helpers/validation';
+import { usersValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { MongooseCustom } from 'libs/mongodb';
@@ -38,7 +38,7 @@ export const createUser = async (req: Request, next: NextFunction) => {
 };
 
 export const updateUser = async (req: Request, next: NextFunction) => {
-  const { error } = userUpdateValidate(req.body);
+  const { error } = usersValidate(req.body);
   const { fullname, username, avatar, bio, website_url, social_network } = req.body;
   const user = req.user;
   const userID = user.userID;

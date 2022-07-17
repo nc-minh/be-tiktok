@@ -7,14 +7,14 @@
   ],
   "extends": [
     "eslint:recommended",
-    "airbnb-typescript/base",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
-    "semi": ["error", "always"],
     "import/extensions": ["off", "never"],
     "import/no-extraneous-dependencies": ["off", "never"],
     "import/no-unresolved": 0,

@@ -1,8 +1,8 @@
 import { NextFunction, Request } from 'express';
 
 import { HttpException, StatusCode } from 'exceptions';
-import { categoryValidate } from 'helpers/validation';
-import CategoryModel from 'models/schemas/Category';
+import { categoryValidate, updateCategoryValidate } from 'helpers/validation';
+import { CategoryModel } from 'models';
 
 export const createCategory = async (req: Request, next: NextFunction) => {
   const { category_name } = req.body;
@@ -36,7 +36,7 @@ export const createCategory = async (req: Request, next: NextFunction) => {
 
 export const updateCategory = async (req: Request, next: NextFunction) => {
   const { category_name, category_id } = req.body;
-  const { error } = categoryValidate(req.body);
+  const { error } = updateCategoryValidate(req.body);
 
   try {
     if (error)
@@ -54,6 +54,15 @@ export const updateCategory = async (req: Request, next: NextFunction) => {
     };
 
     const result = await CategoryModel.findOneAndUpdate({ _id: category_id }, updateDoc);
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Category does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);
@@ -65,6 +74,15 @@ export const forceDeleteCategory = async (req: Request, next: NextFunction) => {
 
   try {
     const result = await CategoryModel.findOneAndDelete({ _id: category_id });
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Category does not exist',
+        StatusCode.BadRequest.name
+      );
+
     return result;
   } catch (error) {
     next(error);

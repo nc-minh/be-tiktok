@@ -11,7 +11,7 @@ export class ApiResponse<T> {
     message && (this.message = message);
     status && (this.status = status);
     time && (this.time = time);
-    meta ? (this.meta = meta): undefined;
+    meta ? (this.meta = meta) : undefined;
   }
 
   public send(res: Response): void {

@@ -4,7 +4,7 @@ import { MODELS } from 'utils/constants/models';
 import PostReaction from '../types/PostReaction';
 import { ReactionTypes } from 'models/types/ReactionTypes';
 
-export const PostReactionSchema = new Schema<PostReaction>(
+const PostReactionSchema = new Schema<PostReaction>(
   {
     user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },
     post_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },

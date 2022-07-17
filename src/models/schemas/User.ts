@@ -4,7 +4,7 @@ import bcypt from 'bcrypt';
 import { MODELS } from 'utils/constants/models';
 import User from '../types/User';
 
-export const UserSchema = new Schema<User>(
+const UserSchema = new Schema<User>(
   {
     fullname: { type: String, required: true },
     username: { type: String, required: true, unique: true },
