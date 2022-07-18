@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginAuthMiddleware, adminAuthMiddleware } from 'middlewares/auth';
+import { loginAuthMiddleware } from 'middlewares/auth';
 import {
   createPost,
   updatePost,
@@ -20,6 +20,6 @@ router.patch('/soft-delete', loginAuthMiddleware, softDeletePost);
 router.post('/', loginAuthMiddleware, createPost);
 router.patch('/', loginAuthMiddleware, updatePost);
 router.delete('/', loginAuthMiddleware, forceDeletePost);
-router.get('/', adminAuthMiddleware, getAllPosts);
+router.get('/', getAllPosts);
 
 export default router;

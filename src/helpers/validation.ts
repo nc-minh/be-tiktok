@@ -98,3 +98,29 @@ export const updateCommentValidate = (body: Request) => {
 
   return schema.validate(body);
 };
+
+export const commentReactionValidate = (body: Request) => {
+  const schema = Joi.object({
+    user_id: Joi.string().required(),
+    comment_id: Joi.string().required(),
+    type: Joi.string().required(),
+  });
+  return schema.validate(body);
+};
+
+export const followValidate = (body: Request) => {
+  const schema = Joi.object({
+    user_id: Joi.string().required(),
+    follow_id: Joi.string().required(),
+  });
+  return schema.validate(body);
+};
+
+export const postReactionValidate = (body: Request) => {
+  const schema = Joi.object({
+    user_id: Joi.string().required(),
+    post_id: Joi.string().required(),
+    type: Joi.string().required(),
+  });
+  return schema.validate(body);
+};

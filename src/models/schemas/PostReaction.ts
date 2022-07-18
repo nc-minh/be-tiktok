@@ -6,7 +6,7 @@ import { ReactionTypes } from 'models/types/ReactionTypes';
 
 const PostReactionSchema = new Schema<PostReaction>(
   {
-    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },
+    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
     post_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.post },
     type: { type: String, required: true, enum: [...ReactionTypes] },
   },

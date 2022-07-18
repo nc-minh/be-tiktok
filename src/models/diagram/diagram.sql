@@ -19,16 +19,8 @@ CREATE TABLE [user] (
 )
 GO
 
-CREATE TABLE [follower] (
-  [follower_id] nvarchar(255),
-  [user_id] nvarchar(255),
-  [created_at] datetime,
-  [updated_at] datetime
-)
-GO
-
-CREATE TABLE [following] (
-  [following_id] nvarchar(255),
+CREATE TABLE [follow] (
+  [follow_id] nvarchar(255),
   [user_id] nvarchar(255),
   [created_at] datetime,
   [updated_at] datetime
@@ -93,26 +85,23 @@ GO
 ALTER TABLE [category] ADD FOREIGN KEY ([_id]) REFERENCES [post] ([category_id])
 GO
 
-ALTER TABLE [follower] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
-GO
-
-ALTER TABLE [following] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
+ALTER TABLE [follow] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
 ALTER TABLE [post_reaction] ADD FOREIGN KEY ([post_id]) REFERENCES [post] ([_id])
 GO
 
-ALTER TABLE [user] ADD FOREIGN KEY ([_id]) REFERENCES [post_reaction] ([user_id])
+ALTER TABLE [post_reaction] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
 ALTER TABLE [comment] ADD FOREIGN KEY ([post_id]) REFERENCES [post] ([_id])
 GO
 
-ALTER TABLE [user] ADD FOREIGN KEY ([_id]) REFERENCES [comment] ([user_id])
+ALTER TABLE [comment] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO
 
 ALTER TABLE [comment_reaction] ADD FOREIGN KEY ([comment_id]) REFERENCES [comment] ([_id])
 GO
 
-ALTER TABLE [user] ADD FOREIGN KEY ([_id]) REFERENCES [comment_reaction] ([user_id])
+ALTER TABLE [comment_reaction] ADD FOREIGN KEY ([user_id]) REFERENCES [user] ([_id])
 GO

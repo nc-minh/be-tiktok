@@ -93,7 +93,6 @@ export const forceDeleteComment = async (req: Request, next: NextFunction) => {
 
   try {
     const userVerification = await CommentModel.findOne({ _id: comment_id });
-    console.log(userVerification?.user_id, userID);
 
     if (userVerification?.user_id.toString() !== userID && userVerification?.user_id) {
       throw new HttpException(

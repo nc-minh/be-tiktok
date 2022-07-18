@@ -1,7 +1,6 @@
 export const MODELS = {
   user: 'user',
-  follower: 'follower',
-  following: 'following',
+  follow: 'follow',
   post: 'post',
   media: 'media',
   category: 'category',
@@ -12,8 +11,7 @@ export const MODELS = {
 
 export const COLLECTION_NAME = {
   user: 'user',
-  follower: 'follower',
-  following: 'following',
+  follow: 'follow',
   post: 'post',
   media: 'media',
   category: 'category',
@@ -24,8 +22,7 @@ export const COLLECTION_NAME = {
 
 export const DOCUMENT_NAME = {
   user: 'User',
-  follower: 'Follower',
-  following: 'Following',
+  follow: 'Follow',
   post: 'Post',
   media: 'Media',
   category: 'Category',

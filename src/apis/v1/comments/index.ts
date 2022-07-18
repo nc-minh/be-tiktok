@@ -7,6 +7,6 @@ const router = Router();
 router.post('/', loginAuthMiddleware, createComment);
 router.patch('/:id', loginAuthMiddleware, updateComment);
 router.delete('/:id', loginAuthMiddleware, forceDeleteComment);
-router.get('/:id', loginAuthMiddleware, getAllCommentsOfPost);
+router.get('/:id', getAllCommentsOfPost);
 
 export default router;
