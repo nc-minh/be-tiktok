@@ -9,10 +9,12 @@ import {
   getAllPosts,
   getAllPostsOfUser,
   getPost,
+  viewPost,
 } from './controller';
 
 const router = Router();
 
+router.post('/view', viewPost);
 router.get('/user/:id', getAllPostsOfUser);
 router.get('/:id', getPost);
 router.patch('/restore', loginAuthMiddleware, restorePost);

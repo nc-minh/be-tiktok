@@ -6,7 +6,7 @@ import postRouter from './posts';
 import categoryRouter from './categories';
 import commentRouter from './comments';
 import commentReactionRouter from './comment_reaction';
-import followRouter from './follow';
+import followRouter from './follows';
 import postReactionRouter from './post_reaction';
 
 const router = Router();

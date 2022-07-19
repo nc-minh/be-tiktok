@@ -1,5 +1,7 @@
-import configs from 'configs';
 import { connect, connection } from 'mongoose';
+
+import configs from 'configs';
+import { logger } from 'utils/logger';
 
 const mongoDBConfig = configs.mongodb;
 
@@ -20,24 +22,24 @@ const options = {
 
 export default async () => {
   try {
-    console.log('Starting connect to MongoDB...');
+    logger.info('Starting connect to MongoDB...');
 
     await connect(mongodbUrl, options);
 
     connection.on('connected', function () {
-      console.log('MongoDB::: Successfully connected to MongoDB');
+      logger.info('MongoDB::: Successfully connected to MongoDB');
     });
 
     connection.on('disconnected', function () {
-      console.log(`\nMongoDB::: Disconnected`);
+      logger.info(`\nMongoDB::: Disconnected`);
     });
 
     connection.on('error', (error) => {
-      console.log('MongoDB::: Connection error::::', JSON.stringify(error));
+      logger.error('MongoDB::: Connection error::::', JSON.stringify(error));
     });
 
-    console.log('Successfully connected to MongoDB');
+    logger.info('Successfully connected to MongoDB');
   } catch (error) {
-    console.log('MongoDB::: Error in tryCatch:::', error);
+    logger.error(`MongoDB::: Error in tryCatch::: ${error}`);
   }
 };

@@ -3,6 +3,7 @@ import connectMongo from './mongo';
 import { client } from './elasticsearch';
 import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
 import { UserModel } from 'models';
+import { logger } from 'utils/logger';
 
 export default async () => {
   if (configs.mongodb.host) {
@@ -16,7 +17,7 @@ export default async () => {
       console.log(healthInfo);
     }
   } catch (error) {
-    console.log('ES::: Connection error');
+    logger.error(`ES::: Connection error::: ${error}`);
   }
 };
 

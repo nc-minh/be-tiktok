@@ -136,3 +136,29 @@ export const forceDeletePost = async (req: Request, next: NextFunction) => {
     next(error);
   }
 };
+
+export const view = async (post_id: string) => {
+  const updateDoc = { $inc: { view_count: 1 } };
+  const result = await PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc);
+  return result;
+};
+
+export const viewPost = async (req: Request, next: NextFunction) => {
+  const { post_id } = req.body;
+
+  try {
+    const result = await view(post_id);
+
+    if (!result)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};

@@ -48,7 +48,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.0",
     "nocache": "^3.0.4",
-    "ts-node": "^10.8.1"
+    "ts-node": "^10.8.1",
+    "winston": "^3.8.1",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",

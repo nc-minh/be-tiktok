@@ -7,6 +7,7 @@ import routers from 'apis';
 import initializeResources from 'resources';
 import configs from 'configs';
 import { errorMiddleware } from 'middlewares';
+import { logger } from 'utils/logger';
 
 const app = express();
 
@@ -46,7 +47,9 @@ const PORT = configs.port || 3000;
 export const listen = async () => {
   await initializeResources();
   app.listen(PORT, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+    logger.info(`=================================`);
+    logger.info(`🚀 ⚡️[server]: Server is running at http://localhost:${PORT}`);
+    logger.info(`=================================`);
   });
 };
 

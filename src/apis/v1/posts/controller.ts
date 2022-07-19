@@ -46,3 +46,8 @@ export const getPost = async (req: Request, res: Response, next: NextFunction): 
   const meta = new Meta(result?.currentPage, result?.length, result?.total);
   if (result) new ApiResponse(result.data, 'OK', 200, Date.now() - req.startTime, Object(meta)).send(res);
 };
+
+export const viewPost = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await service.viewPost(req, next);
+  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
+};
