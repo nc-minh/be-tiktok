@@ -5,14 +5,16 @@ import { cloudinary_v2 } from 'resources/cloudinary';
 
 export class Cloudinary {
   public async uploads(file: any, type?: string): Promise<any> {
+    if (file === undefined) return;
+    const fileName = file.name;
+    const uploadPath = __dirname + '/tmp/' + fileName;
+
+    if (type !== 'video' && file.mimetype.includes('video')) {
+      return;
+    }
+
     try {
       const random_id = randomstring.generate();
-
-      if (file === undefined) return;
-
-      const fileName = file.name;
-
-      const uploadPath = __dirname + '/tmp/' + fileName;
 
       await file.mv(uploadPath);
 
@@ -44,9 +46,11 @@ export class Cloudinary {
       const result = await cloudinary_v2.uploader.upload(uploadPath, options);
 
       await fs.unlinkSync(uploadPath);
+      console.log('uploadPath', uploadPath);
 
       return result;
     } catch (error) {
+      await fs.unlinkSync(uploadPath);
       return error;
     }
   }
