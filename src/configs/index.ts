@@ -33,4 +33,9 @@ export default {
     collectionName: process.env.ELASTIC_COLLECTION_NAME,
     url: process.env.ELASTIC_URL,
   },
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+  },
 };

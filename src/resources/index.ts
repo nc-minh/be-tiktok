@@ -4,17 +4,25 @@ import { client } from './elasticsearch';
 import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
 import { UserModel } from 'models';
 import { logger } from 'utils/logger';
+import { connect } from './cloudinary';
 
 export default async () => {
   if (configs.mongodb.host) {
     await connectMongo();
   }
+
+  if (configs.cloudinary.cloud_name) {
+    await connect;
+
+    logger.info(`Successfully connected to Cloudinary: ${connect.cloud_name}`);
+  }
+
   try {
     if (client) {
       const clientInfo = await client.info();
-      console.log(`Successfully connected to ElasticSearch: cluster_name:${clientInfo.cluster_name}`);
+      logger.info(`Successfully connected to ElasticSearch: cluster_name:${clientInfo.cluster_name}`);
       const healthInfo = await client.cluster.health();
-      console.log(healthInfo);
+      logger.info(healthInfo);
     }
   } catch (error) {
     logger.error(`ES::: Connection error::: ${error}`);

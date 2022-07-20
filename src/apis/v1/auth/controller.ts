@@ -8,6 +8,11 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
 
+export const register = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await service.register(req, next);
+  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
+};
+
 export const refreshToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const result = await service.refreshToken(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);

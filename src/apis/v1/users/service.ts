@@ -4,33 +4,25 @@ import { usersValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { MongooseCustom } from 'libs/mongodb';
+import { Cloudinary } from 'utils/uploads';
 
-export const createUser = async (req: Request, next: NextFunction) => {
-  const { error } = usersValidate(req.body);
-  const { username } = req.body;
+export const updateAvatar = async (req: Request, next: NextFunction) => {
+  const avatar = req.files?.avatar;
+  const user = req.user;
+  const userID = user.userID;
+
   try {
-    if (error)
-      throw new HttpException(
-        'ValidateError',
-        StatusCode.BadRequest.status,
-        error.details[0].message,
-        StatusCode.BadRequest.name
-      );
+    const cloudinary = new Cloudinary();
 
-    const isExits = await UserModel.findOne({
-      username,
-    });
+    const { url } = await cloudinary.uploads(avatar);
 
-    if (isExits) {
-      return next(
-        new HttpException('CreateError', StatusCode.BadRequest.status, 'Username is aready', StatusCode.BadRequest.name)
-      );
-    }
+    const updateDoc = {
+      $set: {
+        avatar: url ? url : undefined,
+      },
+    };
 
-    const user = new UserModel(req.body);
-
-    const result = await user.save();
-
+    const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc);
     return result;
   } catch (error) {
     next(error);

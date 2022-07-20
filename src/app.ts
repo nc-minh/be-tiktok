@@ -2,6 +2,8 @@ import express, { Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import noCache from 'nocache';
+import bodyParser from 'body-parser';
+import expressFileupload from 'express-fileupload';
 
 import routers from 'apis';
 import initializeResources from 'resources';
@@ -12,6 +14,9 @@ import { logger } from 'utils/logger';
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(expressFileupload({ useTempFiles: true }));
 
 function initializeSecurity() {
   app.use(noCache());

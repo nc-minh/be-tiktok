@@ -1,10 +1,43 @@
 import { NextFunction, Request } from 'express';
 
 import { HttpException, StatusCode } from 'exceptions';
-import { loginValidate } from 'helpers/validation';
+import { loginValidate, usersValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from 'helpers/jwt';
 import { RefreshTokenPayload } from 'types/auth';
+
+export const register = async (req: Request, next: NextFunction) => {
+  const { error } = usersValidate(req.body);
+  const { username } = req.body;
+
+  try {
+    if (error)
+      throw new HttpException(
+        'ValidateError',
+        StatusCode.BadRequest.status,
+        error.details[0].message,
+        StatusCode.BadRequest.name
+      );
+
+    const isExits = await UserModel.findOne({
+      username,
+    });
+
+    if (isExits) {
+      return next(
+        new HttpException('CreateError', StatusCode.BadRequest.status, 'Username is aready', StatusCode.BadRequest.name)
+      );
+    }
+
+    const user = new UserModel(req.body);
+
+    const result = await user.save();
+
+    return result;
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const login = async (req: Request, next: NextFunction) => {
   const { username, password } = req.body;

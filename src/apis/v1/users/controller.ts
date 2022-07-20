@@ -4,11 +4,6 @@ import { ApiResponse, Meta } from 'utils/rest';
 import * as service from './service';
 import * as queries from './queries';
 
-export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const result = await service.createUser(req, next);
-  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
-};
-
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const result = await queries.getAllUsers(req, next);
   const meta = new Meta(result?.currentPage, result?.length, result?.total);
@@ -48,5 +43,10 @@ export const softDeleteUser = async (req: Request, res: Response, next: NextFunc
 
 export const restoreUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const result = await service.restoreUser(req, next);
+  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
+};
+
+export const updateAvatar = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await service.updateAvatar(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
