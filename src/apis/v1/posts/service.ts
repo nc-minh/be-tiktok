@@ -4,10 +4,12 @@ import { HttpException, StatusCode } from 'exceptions';
 import { postValidate, updatePostValidate } from 'helpers/validation';
 import { PostModel } from 'models';
 import { MongooseCustom } from 'libs/mongodb';
+import { Cloudinary } from 'utils/uploads';
 
 export const createPost = async (req: Request, next: NextFunction) => {
   const user = req.user;
   const userID = user.userID;
+  const media_url = req.files?.media_url;
 
   const reqBody = {
     ...req.body,
@@ -15,6 +17,25 @@ export const createPost = async (req: Request, next: NextFunction) => {
   };
   const { error } = postValidate(reqBody);
   try {
+    const cloudinary = new Cloudinary();
+    if (Array.isArray(media_url)) {
+      throw new HttpException(
+        'TypeError',
+        StatusCode.BadRequest.status,
+        'Array is not allowed',
+        StatusCode.BadRequest.name
+      );
+    }
+
+    const data = await cloudinary.uploads(media_url, 'auto');
+    console.log(data);
+
+    const reqBodyWithMedia = {
+      ...req.body,
+      user_id: userID,
+      media_url: data && data.url,
+    };
+
     if (error)
       throw new HttpException(
         'ValidateError',
@@ -23,7 +44,7 @@ export const createPost = async (req: Request, next: NextFunction) => {
         StatusCode.BadRequest.name
       );
 
-    const result = await PostModel.create(reqBody);
+    const result = await PostModel.create(data ? reqBodyWithMedia : reqBody);
 
     return result;
   } catch (error) {
@@ -34,15 +55,28 @@ export const createPost = async (req: Request, next: NextFunction) => {
 export const updatePost = async (req: Request, next: NextFunction) => {
   const user = req.user;
   const userID = user.userID;
+  const media_url = req.files?.media_url;
 
   const reqBody = {
     ...req.body,
     user_id: userID,
   };
   const { error } = updatePostValidate(reqBody);
-  const { post_id, contents, media_url, category_id } = req.body;
+  const { post_id, contents, category_id } = req.body;
 
   try {
+    const cloudinary = new Cloudinary();
+    if (Array.isArray(media_url)) {
+      throw new HttpException(
+        'TypeError',
+        StatusCode.BadRequest.status,
+        'Array is not allowed',
+        StatusCode.BadRequest.name
+      );
+    }
+
+    const data = await cloudinary.uploads(media_url, 'auto');
+
     if (error)
       throw new HttpException(
         'ValidateError',
@@ -54,7 +88,7 @@ export const updatePost = async (req: Request, next: NextFunction) => {
     const updateDoc = {
       $set: {
         contents,
-        media_url,
+        media_url: data && data.url,
         category_id,
       },
     };

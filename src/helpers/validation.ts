@@ -36,7 +36,7 @@ export const postValidate = (body: Request) => {
     user_id: Joi.string().required(),
     contents: Joi.string().required(),
     media_url: Joi.string().default(''),
-    category_id: Joi.array().required(),
+    category_id: Joi.array(),
     reaction_count: Joi.number().default(0),
     view_count: Joi.number().default(0),
     is_deleted: Joi.boolean(),

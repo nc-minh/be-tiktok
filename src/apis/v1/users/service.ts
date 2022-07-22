@@ -10,15 +10,32 @@ export const updateAvatar = async (req: Request, next: NextFunction) => {
   const avatar = req.files?.avatar;
   const user = req.user;
   const userID = user.userID;
+  console.log(avatar);
 
   try {
     const cloudinary = new Cloudinary();
 
-    const { url } = await cloudinary.uploads(avatar);
+    if (Array.isArray(avatar)) {
+      throw new HttpException(
+        'TypeError',
+        StatusCode.BadRequest.status,
+        'Array is not allowed',
+        StatusCode.BadRequest.name
+      );
+    }
 
+    const data = await cloudinary.uploads(avatar);
+    if (data.error === 'type_error') {
+      throw new HttpException(
+        'TypeError',
+        StatusCode.BadRequest.status,
+        'Video is not allowed',
+        StatusCode.BadRequest.name
+      );
+    }
     const updateDoc = {
       $set: {
-        avatar: url ? url : undefined,
+        avatar: data ? data.url : undefined,
       },
     };
 

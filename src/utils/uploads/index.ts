@@ -2,15 +2,20 @@ import fs from 'fs';
 import randomstring from 'randomstring';
 
 import { cloudinary_v2 } from 'resources/cloudinary';
+import { FileType } from 'types/rest';
 
 export class Cloudinary {
-  public async uploads(file: any, type?: string): Promise<any> {
+  public async uploads(file: FileType | undefined, type?: string): Promise<any> {
     if (file === undefined) return;
     const fileName = file.name;
     const uploadPath = __dirname + '/tmp/' + fileName;
 
-    if (type !== 'video' && file.mimetype.includes('video')) {
-      return;
+    const mimetype = file.mimetype && file.mimetype.includes('video');
+
+    if (type !== 'auto' && mimetype) {
+      return {
+        error: 'type_error',
+      };
     }
 
     try {
@@ -32,8 +37,8 @@ export class Cloudinary {
         public_id: `tiktok/images/${fileNameOnCloudinary}`,
       };
 
-      const videos_options = {
-        resource_type: 'video',
+      const auto_options = {
+        resource_type: 'auto',
         use_filename: true,
         unique_filename: true,
         overwrite: false,
@@ -41,12 +46,11 @@ export class Cloudinary {
         public_id: `tiktok/videos/${fileNameOnCloudinary}`,
       };
 
-      const options = type === 'video' ? videos_options : images_options;
+      const options = type === 'auto' ? auto_options : images_options;
 
       const result = await cloudinary_v2.uploader.upload(uploadPath, options);
 
       await fs.unlinkSync(uploadPath);
-      console.log('uploadPath', uploadPath);
 
       return result;
     } catch (error) {

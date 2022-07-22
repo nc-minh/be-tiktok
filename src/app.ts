@@ -10,13 +10,14 @@ import initializeResources from 'resources';
 import configs from 'configs';
 import { errorMiddleware } from 'middlewares';
 import { logger } from 'utils/logger';
+import morganMiddleware from 'utils/morgan';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
-app.use(expressFileupload({ useTempFiles: true }));
+app.use(expressFileupload({ useTempFiles: false }));
 
 function initializeSecurity() {
   app.use(noCache());
@@ -26,6 +27,8 @@ function initializeSecurity() {
   app.use(helmet.ieNoOpen());
   app.use(helmet.noSniff());
   app.use(helmet.xssFilter());
+
+  morganMiddleware(app);
 }
 
 function initializeMiddlewares() {
