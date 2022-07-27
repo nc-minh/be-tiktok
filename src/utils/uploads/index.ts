@@ -9,7 +9,7 @@ export class Cloudinary {
     if (file === undefined) return;
     const fileName = file.name;
     const uploadPath = __dirname + '/tmp/' + fileName;
-
+    console.log(file?.size);
     const mimetype = file.mimetype && file.mimetype.includes('video');
 
     if (type !== 'auto' && mimetype) {

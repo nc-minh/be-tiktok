@@ -79,7 +79,7 @@ export const login = async (req: Request, next: NextFunction) => {
       const accessToken = await signAccessToken(lockedUser._id, lockedUser.role);
       const refreshToken = await signRefreshToken(lockedUser._id, lockedUser.role);
       return {
-        token: {
+        tokens: {
           accessToken,
           refreshToken,
         },
@@ -112,7 +112,7 @@ export const login = async (req: Request, next: NextFunction) => {
     const refreshToken = await signRefreshToken(user._id, user.role);
 
     return {
-      token: {
+      tokens: {
         accessToken,
         refreshToken,
       },
@@ -138,8 +138,10 @@ export const refreshToken = async (req: Request, next: NextFunction) => {
 
     const accessToken = await signAccessToken(payload.userID, payload.role);
     return {
-      accessToken,
-      refreshToken,
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
     };
   } catch (error) {
     next(error);

@@ -10,9 +10,17 @@ export const updateAvatar = async (req: Request, next: NextFunction) => {
   const avatar = req.files?.avatar;
   const user = req.user;
   const userID = user.userID;
-  console.log(avatar);
 
   try {
+    if (!req.files) {
+      throw new HttpException(
+        'MissingError',
+        StatusCode.BadRequest.status,
+        'Missing files',
+        StatusCode.BadRequest.name
+      );
+    }
+
     const cloudinary = new Cloudinary();
 
     if (Array.isArray(avatar)) {
