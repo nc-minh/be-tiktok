@@ -50,3 +50,8 @@ export const updateAvatar = async (req: Request, res: Response, next: NextFuncti
   const result = await service.updateAvatar(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
+
+export const getUserByUsername = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await queries.getUserByUsername(req, next);
+  if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
+};

@@ -66,3 +66,21 @@ export const adminAuthMiddleware = async (req: Request, res: Response, next: Nex
     });
   }
 };
+
+export const forwardMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.headers['authorization']) {
+      next();
+    }
+
+    const authHeader = req.headers['authorization'] || '';
+    const bearerToken = authHeader?.split(' ');
+    const token = bearerToken[1];
+
+    const verify = JWT.verify(token, configs.jwt.accessTokenSecret);
+    req.user = verify;
+    next();
+  } catch (error: any) {
+    next();
+  }
+};

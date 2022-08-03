@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request } from 'express';
 
 import { HttpException, StatusCode } from 'exceptions';
@@ -24,8 +25,11 @@ export const register = async (req: Request, next: NextFunction) => {
     });
 
     if (isExits) {
-      return next(
-        new HttpException('CreateError', StatusCode.BadRequest.status, 'Username is aready', StatusCode.BadRequest.name)
+      throw new HttpException(
+        'CreateError',
+        StatusCode.BadRequest.status,
+        'Username is aready',
+        StatusCode.BadRequest.name
       );
     }
 
@@ -33,7 +37,9 @@ export const register = async (req: Request, next: NextFunction) => {
 
     const result = await user.save();
 
-    return result;
+    const { password, is_deleted, is_enabled, role, ...res } = result.toObject();
+
+    return res;
   } catch (error) {
     next(error);
   }

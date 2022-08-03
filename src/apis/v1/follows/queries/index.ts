@@ -45,7 +45,7 @@ export const getFollowing = async (req: Request, next: NextFunction) => {
   try {
     const SIZE = Number(pageSize);
     const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
-    const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
+    const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) : 0;
 
     const result = await FollowModel.find({ user_id, ...QUERY_DELETED_IGNORE })
       .populate([

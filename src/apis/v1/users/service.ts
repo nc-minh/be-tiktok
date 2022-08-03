@@ -1,10 +1,11 @@
 import { Request, NextFunction } from 'express';
 
-import { usersValidate } from 'helpers/validation';
+import { updateUsersValidate } from 'helpers/validation';
 import { UserModel } from 'models';
 import { HttpException, StatusCode } from 'exceptions';
 import { MongooseCustom } from 'libs/mongodb';
 import { Cloudinary } from 'utils/uploads';
+import { QUERY_IGNORE } from 'utils/constants/query';
 
 export const updateAvatar = async (req: Request, next: NextFunction) => {
   const avatar = req.files?.avatar;
@@ -47,15 +48,16 @@ export const updateAvatar = async (req: Request, next: NextFunction) => {
       },
     };
 
-    const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc);
-    return result;
+    await UserModel.findOneAndUpdate({ _id: userID }, updateDoc).select(QUERY_IGNORE);
+
+    return data && data.url;
   } catch (error) {
     next(error);
   }
 };
 
 export const updateUser = async (req: Request, next: NextFunction) => {
-  const { error } = usersValidate(req.body);
+  const { error } = updateUsersValidate(req.body);
   const { fullname, username, avatar, bio, website_url, social_network } = req.body;
   const user = req.user;
   const userID = user.userID;
@@ -92,7 +94,7 @@ export const updateUser = async (req: Request, next: NextFunction) => {
       },
     };
 
-    const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc);
+    const result = await UserModel.findOneAndUpdate({ _id: userID }, updateDoc).select(QUERY_IGNORE);
     return result;
   } catch (error) {
     next(error);

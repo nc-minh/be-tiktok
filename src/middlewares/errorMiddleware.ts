@@ -6,7 +6,7 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
   const errorCode = error.errorCode || 'ERROR_CODE_NOT_FOUND';
   const time = Date.now() - req.startTime;
 
-  res.json({
+  res.status(error.status).json({
     name: error.name,
     message: error.message,
     status: error.status,

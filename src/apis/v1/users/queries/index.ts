@@ -1,8 +1,8 @@
 import { HttpException, StatusCode } from 'exceptions';
 import { Request, NextFunction } from 'express';
 
-import { UserModel } from 'models';
-import { QUERY_LOCKED_IGNORE, QUERY_IGNORE, PAGE_SIZE } from 'utils/constants/query';
+import { UserModel, FollowModel } from 'models';
+import { QUERY_LOCKED_IGNORE, QUERY_IGNORE, PAGE_SIZE, QUERY_DELETED_IGNORE } from 'utils/constants/query';
 
 export const getAllUsers = async (req: Request, next: NextFunction) => {
   const { pageSize = PAGE_SIZE, currentPage = 1 } = req.query;
@@ -10,7 +10,7 @@ export const getAllUsers = async (req: Request, next: NextFunction) => {
   try {
     const SIZE = Number(pageSize);
     const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
-    const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
+    const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) : 0;
 
     const result = await UserModel.find({ ...QUERY_LOCKED_IGNORE })
       .select(QUERY_IGNORE)
@@ -100,6 +100,54 @@ export const getUserinfo = async (req: Request, next: NextFunction) => {
     }
 
     return result;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserByUsername = async (req: Request, next: NextFunction) => {
+  try {
+    const { username } = req.params;
+    const user = req.user;
+
+    const result = await UserModel.findOne({ username, ...QUERY_LOCKED_IGNORE }).select(QUERY_IGNORE);
+
+    if (!result) {
+      throw new HttpException(
+        'NotFound',
+        StatusCode.BadRequest.status,
+        'NotFound',
+        'NotFound',
+        Date.now() - req.startTime
+      );
+    }
+
+    if (user && user.userID) {
+      const user_id = user.userID;
+      const checkFollow = await FollowModel.find({ user_id, ...QUERY_DELETED_IGNORE })
+        .populate([
+          {
+            path: 'follow_id',
+            select: 'fullname username avatar tick',
+          },
+          {
+            path: 'user_id',
+            select: 'fullname username avatar tick',
+          },
+        ])
+        .select(QUERY_IGNORE);
+
+      const isFollowed = checkFollow.find((element) => {
+        return element.follow_id.username === username;
+      });
+
+      if (isFollowed) {
+        const newResult = { ...result.toObject(), isFollow: true };
+
+        return newResult;
+      }
+    }
+    return { ...result.toObject(), isFollow: false };
   } catch (error) {
     next(error);
   }

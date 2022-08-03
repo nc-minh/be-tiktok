@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { asyncRouteHandler } from 'middlewares';
+
 import {
   getAllUsers,
   searchAllUsers,
@@ -9,11 +10,13 @@ import {
   disableUser,
   enableUser,
   updateAvatar,
+  getUserByUsername,
 } from './controller';
-import { loginAuthMiddleware } from 'middlewares/auth';
+import { loginAuthMiddleware, forwardMiddleware } from 'middlewares/auth';
 
 const router = Router();
 
+router.get('/info/:username', forwardMiddleware, asyncRouteHandler(getUserByUsername));
 router.patch('/avatar', loginAuthMiddleware, asyncRouteHandler(updateAvatar));
 router.patch('/disable', loginAuthMiddleware, asyncRouteHandler(disableUser));
 router.patch('/enable', loginAuthMiddleware, asyncRouteHandler(enableUser));
