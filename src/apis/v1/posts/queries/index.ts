@@ -56,7 +56,8 @@ export const getAllPostsOfUser = async (req: Request, next: NextFunction) => {
       ])
       .select(QUERY_IGNORE + ' -user_id')
       .skip(FROM)
-      .limit(SIZE);
+      .limit(SIZE)
+      .sort({ _id: -1 });
 
     const user = await UserModel.findOne({ _id: user_id }).select(QUERY_IGNORE);
 

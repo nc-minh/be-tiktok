@@ -17,6 +17,14 @@ export const createPost = async (req: Request, next: NextFunction) => {
   };
   const { error } = postValidate(reqBody);
   try {
+    if (error)
+      throw new HttpException(
+        'ValidateError',
+        StatusCode.BadRequest.status,
+        error.details[0].message,
+        StatusCode.BadRequest.name
+      );
+
     const cloudinary = new Cloudinary();
     if (Array.isArray(media_url)) {
       throw new HttpException(
@@ -35,14 +43,6 @@ export const createPost = async (req: Request, next: NextFunction) => {
       user_id: userID,
       media_url: data && data.url,
     };
-
-    if (error)
-      throw new HttpException(
-        'ValidateError',
-        StatusCode.BadRequest.status,
-        error.details[0].message,
-        StatusCode.BadRequest.name
-      );
 
     const result = await PostModel.create(data ? reqBodyWithMedia : reqBody);
 

@@ -1,4 +1,6 @@
 tmp/*
+.env.production
+.env.development
 
 # Logs
 logs
