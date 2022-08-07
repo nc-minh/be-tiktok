@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "target": "es2016",   
     "module": "commonjs",  
     "baseUrl": ".",
@@ -12,10 +13,10 @@
     "typeRoots" : ["./src/types", "./node_modules/@types"],
     "strict": true,    
     "skipLibCheck": true,
+    "noImplicitAny": false
   },
   "include": ["src", "~"],
   "exclude": [
-        "dist",
         "node_modules"
     ]
 }
