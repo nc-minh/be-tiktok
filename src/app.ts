@@ -14,7 +14,12 @@ import morganMiddleware from 'utils/morgan';
 
 const app = express();
 
-app.use(cors());
+const corsOption = {
+  credentials: true,
+  origin: ['https://tiktokbyme.xyz', 'http://localhost:3000'],
+};
+
+app.use(cors(corsOption));
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(expressFileupload({ useTempFiles: false }));
