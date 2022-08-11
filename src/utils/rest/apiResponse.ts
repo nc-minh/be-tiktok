@@ -1,8 +1,8 @@
 import { Response } from 'express';
 export class ApiResponse<T> {
   data: T = {} as T;
-  message: string = 'Successfully!';
-  status: number = 200;
+  message = 'Successfully!';
+  status = 200;
   time?: number;
   meta?: T;
 
