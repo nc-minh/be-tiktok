@@ -9,13 +9,13 @@
     "npm": "8.x"
   },
   "scripts": {
-    "start-ts:dev": "cross-env NODE_PATH=./src nodemon --exec ts-node -r tsconfig-paths/register ./src/server.ts",
+    "start-ts:dev": "cross-env NODE_ENV=development nodemon --exec ts-node -r tsconfig-paths/register ./src/server.ts",
     "start-ts:production": "cross-env NODE_ENV=production nodemon --exec ts-node -r tsconfig-paths/register ./src/server.ts",
     "clean": "rimraf dist",
-    "build": "rimraf dist && tsc",
+    "build": "tsc && npx tsc-alias",
     "watch:build": "tsc --watch",
     "watch:server": "cross-env NODE_PATH=./dist nodemon './dist/server.js' --watch './dist'",
-    "start": "rimraf dist && tsc && cross-env NODE_PATH=./dist node './dist/server.js' --watch './dist'",
+    "start": "cross-env NODE_PATH=./dist node './dist/server.js' --watch './dist'",
     "tslint:check": "tslint -c tslint.json './src/**/*.{js,ts,tsx}'",
     "prettier": "prettier --write ./src/**/*.{js,ts,tsx,scss}",
     "prettier:check": "prettier --list-different ./src/**/*.{js,ts,tsx,scss}",
