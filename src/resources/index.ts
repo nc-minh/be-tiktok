@@ -5,6 +5,7 @@ import { MongodbSubmitToElasticSearch } from 'libs/elasticsearch';
 import { UserModel } from 'models';
 import { logger } from 'utils/logger';
 import { connect } from './cloudinary';
+import { redis } from './redis';
 
 export default async () => {
   if (configs.mongodb.host) {
@@ -26,6 +27,10 @@ export default async () => {
     }
   } catch (error) {
     logger.error(`ES::: Connection error::: ${error}`);
+  }
+
+  if (configs.redisHost) {
+    logger.info(`Redis status: ${redis.status}`);
   }
 };
 

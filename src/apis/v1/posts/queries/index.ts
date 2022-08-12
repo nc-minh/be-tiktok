@@ -2,7 +2,6 @@ import { Request, NextFunction } from 'express';
 
 import { PostModel, UserModel } from 'models';
 import { QUERY_DELETED_IGNORE, QUERY_IGNORE, PAGE_SIZE } from 'utils/constants/query';
-import { view } from '../service';
 
 export const getAllPosts = async (req: Request, next: NextFunction) => {
   const { pageSize = PAGE_SIZE, currentPage = 1 } = req.query;
@@ -98,8 +97,6 @@ export const getPost = async (req: Request, next: NextFunction) => {
       .select(QUERY_IGNORE)
       .skip(FROM)
       .limit(SIZE);
-
-    await view(post_id);
 
     return {
       data: result,

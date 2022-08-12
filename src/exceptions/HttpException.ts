@@ -5,11 +5,11 @@ class HttpException extends Error {
 
   public message: string;
 
-  public errorCode: string;
+  public errorCode?: string;
 
   public time?: number;
 
-  constructor(name: string, status: number, message: string, errorCode: string, time?: number) {
+  constructor(name: string, status: number, message: string, errorCode?: string, time?: number) {
     super(message);
     this.name = name;
     this.status = status;

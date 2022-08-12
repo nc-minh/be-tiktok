@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import noCache from 'nocache';
 import bodyParser from 'body-parser';
 import expressFileupload from 'express-fileupload';
+import requestIp from 'request-ip';
 
 import routers from 'apis';
 import initializeResources from 'resources';
@@ -29,6 +30,7 @@ app.use(
     limit: '100mb',
   })
 );
+app.set('trust proxy', true);
 
 function initializeSecurity() {
   app.use(noCache());
@@ -38,6 +40,7 @@ function initializeSecurity() {
   app.use(helmet.ieNoOpen());
   app.use(helmet.noSniff());
   app.use(helmet.xssFilter());
+  app.use(requestIp.mw());
 
   morganMiddleware(app);
 }
