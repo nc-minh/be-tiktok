@@ -1,0 +1,37 @@
+version: "3.8"
+
+networks:
+  be-tiktok-net:
+    driver: bridge
+
+services:
+  #container redis-server
+  be-redis:
+    image: redis:6.0-alpine
+    container_name: be-redis
+    restart: unless-stopped
+    command: redis-server
+    ports:
+      - 6379:6379
+    networks:
+      - be-tiktok-net
+
+
+  #container Nodejs
+  be-tiktok:
+    container_name: be-tiktok
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    restart: unless-stopped
+    env_file:
+      - docker.env
+    ports:
+      - 4000:4000
+    networks:
+      - be-tiktok-net
+    links:
+      - "be-redis"
+    depends_on:
+      - be-redis
+  
