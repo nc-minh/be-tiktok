@@ -38,4 +38,5 @@ export default {
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET,
   },
+  redisHost: process.env.REDIS_HOST || '6379',
 };

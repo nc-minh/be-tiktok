@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { asyncRouteHandler } from 'middlewares';
 import { adminAuthMiddleware } from 'middlewares/auth';
 import {
   createCategory,
@@ -10,10 +11,10 @@ import {
 
 const router = Router();
 
-router.post('/', adminAuthMiddleware, createCategory);
-router.patch('/', adminAuthMiddleware, updateCategory);
-router.delete('/', adminAuthMiddleware, forceDeleteCategory);
-router.get('/', getAllCategories);
-router.get('/:id', getAllPostsOfCategory);
+router.post('/', adminAuthMiddleware, asyncRouteHandler(createCategory));
+router.patch('/', adminAuthMiddleware, asyncRouteHandler(updateCategory));
+router.delete('/', adminAuthMiddleware, asyncRouteHandler(forceDeleteCategory));
+router.get('/', asyncRouteHandler(getAllCategories));
+router.get('/:id', asyncRouteHandler(getAllPostsOfCategory));
 
 export default router;

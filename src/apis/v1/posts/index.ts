@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { asyncRouteHandler } from 'middlewares';
 import { loginAuthMiddleware } from 'middlewares/auth';
 import {
   createPost,
@@ -14,14 +15,14 @@ import {
 
 const router = Router();
 
-router.post('/view', viewPost);
-router.get('/user/:id', getAllPostsOfUser);
-router.get('/:id', getPost);
-router.patch('/restore', loginAuthMiddleware, restorePost);
-router.patch('/soft-delete', loginAuthMiddleware, softDeletePost);
-router.post('/', loginAuthMiddleware, createPost);
-router.patch('/', loginAuthMiddleware, updatePost);
-router.delete('/', loginAuthMiddleware, forceDeletePost);
-router.get('/', getAllPosts);
+router.get('/view/:id', asyncRouteHandler(viewPost));
+router.get('/user/:id', asyncRouteHandler(getAllPostsOfUser));
+router.get('/:id', asyncRouteHandler(getPost));
+router.patch('/restore', loginAuthMiddleware, asyncRouteHandler(restorePost));
+router.patch('/soft-delete', loginAuthMiddleware, asyncRouteHandler(softDeletePost));
+router.post('/', loginAuthMiddleware, asyncRouteHandler(createPost));
+router.patch('/', loginAuthMiddleware, asyncRouteHandler(updatePost));
+router.delete('/', loginAuthMiddleware, asyncRouteHandler(forceDeletePost));
+router.get('/', asyncRouteHandler(getAllPosts));
 
 export default router;

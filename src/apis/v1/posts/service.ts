@@ -5,6 +5,7 @@ import { postValidate, updatePostValidate } from 'helpers/validation';
 import { PostModel } from 'models';
 import { MongooseCustom } from 'libs/mongodb';
 import { Cloudinary } from 'utils/uploads';
+import { setNX } from 'resources/redis';
 
 export const createPost = async (req: Request, next: NextFunction) => {
   const user = req.user;
@@ -36,7 +37,6 @@ export const createPost = async (req: Request, next: NextFunction) => {
     }
 
     const data = await cloudinary.uploads(media_url, 'auto');
-    console.log(data);
 
     const reqBodyWithMedia = {
       ...req.body,
@@ -171,18 +171,25 @@ export const forceDeletePost = async (req: Request, next: NextFunction) => {
   }
 };
 
-export const view = async (post_id: string) => {
-  const updateDoc = { $inc: { view_count: 1 } };
-  const result = await PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc);
-  return result;
+export const view = async (post_id: string, ipAddress: string) => {
+  const isOk = await setNX(ipAddress, 'value', 10);
+
+  if (isOk) {
+    const updateDoc = { $inc: { view_count: 1 } };
+    const result = await PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc);
+    return result;
+  } else {
+    return 'notview';
+  }
 };
 
 export const viewPost = async (req: Request, next: NextFunction) => {
-  const { post_id } = req.body;
+  const { id } = req.params;
+
+  const ipAddress: string = req.clientIp || '';
 
   try {
-    const result = await view(post_id);
-
+    const result = await view(id, ipAddress);
     if (!result)
       throw new HttpException(
         'NotFoundError',
@@ -191,6 +198,9 @@ export const viewPost = async (req: Request, next: NextFunction) => {
         StatusCode.BadRequest.name
       );
 
+    if (result === 'notview') {
+      throw new HttpException('Error', StatusCode.BadRequest.status, 'Not view', StatusCode.BadRequest.name);
+    }
     return result;
   } catch (error) {
     next(error);
