@@ -18,6 +18,7 @@ const PostSchema = new Schema<Post>(
     ],
     reaction_count: { type: Number, default: 0 },
     view_count: { type: Number, default: 0 },
+    comment_count: { type: Number, default: 0 },
     is_deleted: { type: Boolean, default: false },
   },
   {
