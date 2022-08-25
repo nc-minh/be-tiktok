@@ -108,7 +108,7 @@ export const getUserinfo = async (req: Request, next: NextFunction) => {
 export const getUserByUsername = async (req: Request, next: NextFunction) => {
   try {
     const { username } = req.params;
-    const user = req.user;
+    const user = req?.user;
 
     const result = await UserModel.findOne({ username, ...QUERY_LOCKED_IGNORE }).select(QUERY_IGNORE);
 
@@ -122,7 +122,7 @@ export const getUserByUsername = async (req: Request, next: NextFunction) => {
       );
     }
 
-    if (user && user.userID) {
+    if (user) {
       const user_id = user.userID;
       const checkFollow = await FollowModel.find({ user_id, ...QUERY_DELETED_IGNORE })
         .populate([
@@ -143,11 +143,38 @@ export const getUserByUsername = async (req: Request, next: NextFunction) => {
 
       if (isFollowed) {
         const newResult = { ...result.toObject(), isFollow: true };
-
         return newResult;
       }
     }
+
     return { ...result.toObject(), isFollow: false };
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSuggestedAccounts = async (req: Request, next: NextFunction) => {
+  const { pageSize = PAGE_SIZE, currentPage = 1 } = req.query;
+
+  try {
+    const SIZE = Number(pageSize);
+    const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
+    const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) : 0;
+
+    const result = await UserModel.find({ ...QUERY_LOCKED_IGNORE })
+      .sort({ followers_count: -1, likes_count: -1 })
+      .select(QUERY_IGNORE)
+      .skip(FROM)
+      .limit(SIZE);
+
+    const count = await UserModel.count({ ...QUERY_LOCKED_IGNORE });
+
+    return {
+      data: result,
+      currentPage: CURRENT_PAGE,
+      length: SIZE,
+      total: count,
+    };
   } catch (error) {
     next(error);
   }

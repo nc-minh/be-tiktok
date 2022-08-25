@@ -55,3 +55,9 @@ export const getUserByUsername = async (req: Request, res: Response, next: NextF
   const result = await queries.getUserByUsername(req, next);
   if (result) new ApiResponse(result, 'OK', 200, Date.now() - req.startTime).send(res);
 };
+
+export const getSuggestedAccounts = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const result = await queries.getSuggestedAccounts(req, next);
+  const meta = new Meta(result?.currentPage, result?.length, result?.total);
+  if (result) new ApiResponse(result.data, 'OK', 200, Date.now() - req.startTime, Object(meta)).send(res);
+};

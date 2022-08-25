@@ -13,9 +13,16 @@ export const getAllCommentsOfPost = async (req: Request, next: NextFunction) => 
     const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
 
     const result = await CommentModel.find({ post_id, ...QUERY_DELETED_IGNORE })
+      .populate([
+        {
+          path: 'user_id',
+          select: 'fullname username avatar tick',
+        },
+      ])
       .select(QUERY_IGNORE)
       .skip(FROM)
-      .limit(SIZE);
+      .limit(SIZE)
+      .sort({ _id: -1 });
 
     return {
       data: result,
