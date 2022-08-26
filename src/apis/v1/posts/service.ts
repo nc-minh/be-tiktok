@@ -199,7 +199,7 @@ export const viewPost = async (req: Request, next: NextFunction) => {
       );
 
     if (result === 'notview') {
-      throw new HttpException('Error', StatusCode.BadRequest.status, 'Not view', StatusCode.BadRequest.name);
+      return 'OK';
     }
     return result;
   } catch (error) {

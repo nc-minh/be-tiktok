@@ -11,11 +11,13 @@ import {
   getAllPostsOfUser,
   getPost,
   viewPost,
+  getPostTrends,
 } from './controller';
 
 const router = Router();
 
-router.get('/view/:id', asyncRouteHandler(viewPost));
+router.get('/for-you', forwardMiddleware, asyncRouteHandler(getPostTrends));
+router.post('/view/:id', asyncRouteHandler(viewPost));
 router.get('/user/:id', forwardMiddleware, asyncRouteHandler(getAllPostsOfUser));
 router.get('/:id', asyncRouteHandler(getPost));
 router.patch('/restore', loginAuthMiddleware, asyncRouteHandler(restorePost));

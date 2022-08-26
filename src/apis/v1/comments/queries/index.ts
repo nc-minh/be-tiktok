@@ -1,3 +1,5 @@
+import { view } from 'apis/v1/posts/service';
+import { HttpException, StatusCode } from 'exceptions';
 import { Request, NextFunction } from 'express';
 
 import { CommentModel } from 'models';
@@ -6,8 +8,18 @@ import { QUERY_DELETED_IGNORE, QUERY_IGNORE, PAGE_SIZE } from 'utils/constants/q
 export const getAllCommentsOfPost = async (req: Request, next: NextFunction) => {
   const { pageSize = PAGE_SIZE, currentPage = 1 } = req.query;
   const post_id = req.params.id;
+  const ipAddress: string = req.clientIp || '';
 
   try {
+    const isView = await view(post_id, ipAddress);
+    if (!isView)
+      throw new HttpException(
+        'NotFoundError',
+        StatusCode.BadRequest.status,
+        'Post does not exist',
+        StatusCode.BadRequest.name
+      );
+
     const SIZE = Number(pageSize);
     const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
     const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
