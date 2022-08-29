@@ -19,7 +19,7 @@ const router = Router();
 router.get('/for-you', forwardMiddleware, asyncRouteHandler(getPostTrends));
 router.post('/view/:id', asyncRouteHandler(viewPost));
 router.get('/user/:id', forwardMiddleware, asyncRouteHandler(getAllPostsOfUser));
-router.get('/:id', asyncRouteHandler(getPost));
+router.get('/:id', forwardMiddleware, asyncRouteHandler(getPost));
 router.patch('/restore', loginAuthMiddleware, asyncRouteHandler(restorePost));
 router.patch('/soft-delete', loginAuthMiddleware, asyncRouteHandler(softDeletePost));
 router.post('/', loginAuthMiddleware, asyncRouteHandler(createPost));

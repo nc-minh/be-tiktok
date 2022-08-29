@@ -172,7 +172,7 @@ export const forceDeletePost = async (req: Request, next: NextFunction) => {
 };
 
 export const view = async (post_id: string, ipAddress: string) => {
-  const isOk = await setNX(ipAddress, 'value', 10);
+  const isOk = await setNX(`${ipAddress}-${post_id}`, 'value', 10);
 
   if (isOk) {
     const updateDoc = { $inc: { view_count: 1 } };
