@@ -12,16 +12,20 @@ export const getAllCategories = async (req: Request, next: NextFunction) => {
     const FROM = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
     const CURRENT_PAGE: number = currentPage !== 1 ? Number(currentPage) * SIZE : 0;
 
-    const result = await CategoryModel.find({ ...QUERY_DELETED_IGNORE })
+    const result = CategoryModel.find({ ...QUERY_DELETED_IGNORE })
       .select(QUERY_IGNORE)
       .skip(FROM)
       .limit(SIZE);
 
+    const count = CategoryModel.count({ ...QUERY_DELETED_IGNORE });
+
+    const resolveAll = await Promise.all([result, count]);
+
     return {
-      data: result,
+      data: resolveAll[0],
       currentPage: CURRENT_PAGE,
       length: SIZE,
-      total: result.length,
+      total: resolveAll[1],
     };
   } catch (error) {
     next(error);

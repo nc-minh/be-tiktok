@@ -32,6 +32,11 @@ const setNX = async (key: string, value: any, ttl: number | string) => {
   return redis.set(key, value, 'EX', ttl, 'NX');
 };
 
+const setXX = async (key: string, value: any, ttl: number | string) => {
+  logger.info(`setXX cache with key: ${key}`);
+  return redis.set(key, value, 'EX', ttl, 'XX');
+};
+
 const get = async (key: string) => {
   logger.info(`get cache with key: ${key}`);
   const data = await redis.get(key);
@@ -46,4 +51,4 @@ const clear = async (key: string) => {
   return data;
 };
 
-export { set, setNX, get, clear, redis };
+export { set, setNX, setXX, get, clear, redis };

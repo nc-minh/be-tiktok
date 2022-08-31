@@ -5,8 +5,8 @@ import Follow from '../types/Follow';
 
 const FollowSchema = new Schema<Follow>(
   {
-    follow_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
-    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user },
+    follow_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user }, // As A
+    user_id: { type: Schema.Types.ObjectId, required: true, ref: MODELS.user }, // As B => B is following A
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },

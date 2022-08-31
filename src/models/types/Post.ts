@@ -10,5 +10,6 @@ export default interface Post extends Document {
   category_id: Category[];
   reaction_count: number;
   view_count: number;
+  comment_count: number;
   is_deleted: boolean;
 }
