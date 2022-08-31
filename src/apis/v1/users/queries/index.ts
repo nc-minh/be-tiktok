@@ -110,6 +110,8 @@ export const getUserByUsername = async (req: Request, next: NextFunction) => {
     const { username } = req.params;
     const user = req?.user;
 
+    console.log('username', username);
+
     const result = await UserModel.findOne({ username, ...QUERY_LOCKED_IGNORE }).select(QUERY_IGNORE);
 
     if (!result) {
@@ -138,7 +140,7 @@ export const getUserByUsername = async (req: Request, next: NextFunction) => {
         .select(QUERY_IGNORE);
 
       const isFollowed = checkFollow.find((element) => {
-        return element.follow_id.username === username;
+        return element?.follow_id?.username === username;
       });
 
       if (isFollowed) {
