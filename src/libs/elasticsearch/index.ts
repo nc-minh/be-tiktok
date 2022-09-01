@@ -1,5 +1,5 @@
-import { CreateIndicesTypes, DeleteDataTypes, IndexTypes } from './types';
-import User from 'models/types/User';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { CreateIndicesTypes, DeleteDataTypes } from './types';
 
 export class MongodbSubmitToElasticSearch {
   public client: any;

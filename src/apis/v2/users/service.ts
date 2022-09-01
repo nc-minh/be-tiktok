@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, NextFunction } from 'express';
 
 import { usersValidate } from 'helpers/validation';
