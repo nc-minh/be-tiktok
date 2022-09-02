@@ -51,22 +51,30 @@ export const follow = async (req: Request, next: NextFunction) => {
 
     if (isExits) {
       const deleteId = new ObjectId(isExits._id);
-      const result = await FollowModel.findByIdAndDelete({ _id: deleteId });
+      const result = FollowModel.findByIdAndDelete({ _id: deleteId });
       const updateDocFollower = { $inc: { followers_count: -1 } };
       const updateDocFollowing = { $inc: { followings_count: -1 } };
-      await UserModel.findByIdAndUpdate({ _id: userID }, updateDocFollowing);
-      await UserModel.findByIdAndUpdate({ _id: follow_id }, updateDocFollower);
 
-      return result;
+      const resolveAll = await Promise.all([
+        result,
+        UserModel.findByIdAndUpdate({ _id: userID }, updateDocFollowing),
+        UserModel.findByIdAndUpdate({ _id: follow_id }, updateDocFollower),
+      ]);
+
+      return { ...resolveAll[0]?.toObject(), unfollow: true };
     }
 
-    const result = await FollowModel.create(reqBody);
+    const result = FollowModel.create(reqBody);
     const updateDocFollower = { $inc: { followers_count: 1 } };
     const updateDocFollowing = { $inc: { followings_count: 1 } };
-    await UserModel.findByIdAndUpdate({ _id: userID }, updateDocFollowing);
-    await UserModel.findByIdAndUpdate({ _id: follow_id }, updateDocFollower);
 
-    return result;
+    const resolveAll = await Promise.all([
+      result,
+      UserModel.findByIdAndUpdate({ _id: userID }, updateDocFollowing),
+      UserModel.findByIdAndUpdate({ _id: follow_id }, updateDocFollower),
+    ]);
+
+    return resolveAll[0];
   } catch (error) {
     next(error);
   }

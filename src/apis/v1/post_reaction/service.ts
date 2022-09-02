@@ -43,18 +43,20 @@ export const postReaction = async (req: Request, next: NextFunction) => {
 
     if (isExits) {
       const deleteId = new ObjectId(isExits._id);
-      const result = await PostReactionModel.findByIdAndDelete({ _id: deleteId });
+      const result = PostReactionModel.findByIdAndDelete({ _id: deleteId });
       const updateDoc = { $inc: { reaction_count: -1 } };
-      await PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc);
 
-      return result;
+      const resolveAll = await Promise.all([result, PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc)]);
+
+      return { ...resolveAll[0]?.toObject(), unReaction: true };
     }
 
-    const result = await PostReactionModel.create(reqBody);
+    const result = PostReactionModel.create(reqBody);
     const updateDoc = { $inc: { reaction_count: 1 } };
-    await PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc);
 
-    return result;
+    const resolveAll = await Promise.all([result, PostModel.findByIdAndUpdate({ _id: post_id }, updateDoc)]);
+
+    return resolveAll[0];
   } catch (error) {
     next(error);
   }
