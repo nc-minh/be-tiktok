@@ -7,8 +7,9 @@ import { FileType } from 'types/rest';
 export class Cloudinary {
   public async uploads(file: FileType | undefined, type?: string): Promise<any> {
     if (file === undefined) return;
+
     const fileName = file.name;
-    const uploadPath = __dirname + '/tmp/' + fileName;
+    const uploadPath = `./${fileName}`;
     const mimetype = file.mimetype && file.mimetype.includes('video');
 
     if (type !== 'auto' && mimetype) {
